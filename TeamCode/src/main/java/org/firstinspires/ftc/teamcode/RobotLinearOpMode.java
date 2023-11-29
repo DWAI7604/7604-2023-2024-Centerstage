@@ -39,7 +39,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         //Specifications of hardware
         final double WHEEL_DIAMETER_INCHES = 3.77953;
         final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
-        final double GEAR_RATIO = 20;
+        final double GEAR_RATIO = 19.2;
         final double COUNTS_PER_ROTATION_AT_MOTOR = 28;
         final double TICKS_PER_ROTATION = (GEAR_RATIO * COUNTS_PER_ROTATION_AT_MOTOR);
         final double TICKS_PER_INCH = (TICKS_PER_ROTATION) / (WHEEL_CIRCUMFERENCE_INCHES);
@@ -65,10 +65,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(leftFrontTarget);
-            rightFrontDriveMotor.setTargetPosition(rightFrontTarget);
-            leftBackDriveMotor.setTargetPosition(leftBackTarget);
-            rightBackDriveMotor.setTargetPosition(rightBackTarget);
+            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget);
+            rightFrontDriveMotor.setTargetPosition(-rightFrontTarget);
+            leftBackDriveMotor.setTargetPosition(-leftBackTarget);
+            rightBackDriveMotor.setTargetPosition(-rightBackTarget);
 
             //Tells the motors to drive until they reach the target position
             leftFrontDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -82,7 +82,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftFrontDriveMotor.isBusy() && opModeIsActive()) {
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -115,7 +115,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftFrontDriveMotor.isBusy() && opModeIsActive()) {
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
 
             }
             //Kills the motors to prepare for next call of method
@@ -146,7 +146,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftFrontDriveMotor.isBusy() && opModeIsActive()) {
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -177,7 +177,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftFrontDriveMotor.isBusy() && opModeIsActive()) {
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 

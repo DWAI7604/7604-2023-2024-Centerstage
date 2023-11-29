@@ -3,9 +3,16 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 @TeleOp(name="DTeleOp", group = "Linear OpMode")
 public class DTeleOp extends RobotLinearOpMode {
@@ -32,6 +39,8 @@ public class DTeleOp extends RobotLinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
+
+
             standardDrive();
 
 
@@ -47,14 +56,14 @@ public class DTeleOp extends RobotLinearOpMode {
         double leftBackMotorPower;
         double rightBackMotorPower;
 
-        double axial = gamepad1.right_stick_y;
+        double axial = -gamepad1.right_stick_y;
         double lateral = gamepad1.right_stick_x;
-        double yaw = gamepad1.left_stick_x;
+        double yaw = -gamepad1.left_stick_x;
 
-        leftFrontMotorPower = axial + lateral + yaw;
-        rightFrontMotorPower = axial - lateral - yaw;
-        leftBackMotorPower = axial - lateral + yaw;
-        rightBackMotorPower = axial + lateral - yaw;
+        leftFrontMotorPower = axial - lateral + yaw;
+        rightFrontMotorPower = axial + lateral - yaw;
+        leftBackMotorPower = axial + lateral + yaw;
+        rightBackMotorPower = axial - lateral - yaw;
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);
@@ -70,38 +79,23 @@ public class DTeleOp extends RobotLinearOpMode {
         double rightBackMotorPower;
 
 
-        double axial = gamepad1.right_stick_y;
-        double lateral = gamepad1.right_stick_x;
-        double yaw = gamepad1.left_stick_x;
+        double axial = gamepad1.right_stick_y; //forward and back power
+        double lateral = gamepad1.right_stick_x; //left and right power
+        double yaw = gamepad1.left_stick_x; //turning
 
 
-        if(axial < 0) {
-             axial = -(Math.pow(axial, 2));
-        } else if(axial > 0) {
-            axial = Math.pow(axial, 2);
-        }
 
-        if(lateral < 0) {
-            lateral = -(Math.pow(lateral, 2));
-        } else if(lateral > 0) {
-            lateral = Math.pow(lateral, 2);
-        }
 
-        if(yaw < 0) {
-            yaw = -(Math.pow(yaw, 2));
-        } else if(yaw > 0) {
-            yaw = Math.pow(yaw, 2);
-        }
-
-        leftFrontMotorPower = axial + lateral + yaw;
-        rightFrontMotorPower = axial - lateral - yaw;
-        leftBackMotorPower = axial - lateral + yaw;
-        rightBackMotorPower = axial + lateral - yaw;
+        leftFrontMotorPower = axial - lateral + yaw;
+        rightFrontMotorPower = axial + lateral - yaw;
+        leftBackMotorPower = axial + lateral + yaw;
+        rightBackMotorPower = axial - lateral - yaw;
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);
         leftBackDriveMotor.setPower(leftBackMotorPower);
         rightBackDriveMotor.setPower(rightBackMotorPower);
+
     }
 
     public void juliansBullshit() {
@@ -154,6 +148,20 @@ public class DTeleOp extends RobotLinearOpMode {
 
         }
 
+
+        }
+    public void declareHardwareProperties() {
+
+
+        rightFrontDriveMotor = hardwareMap.get(DcMotor.class, "rightFrontDriveMotor");
+        leftFrontDriveMotor = hardwareMap.get(DcMotor.class, "leftFrontDriveMotor");
+        rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBackDriveMotor");
+        leftBackDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
+
+        rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
     }
 
 }
