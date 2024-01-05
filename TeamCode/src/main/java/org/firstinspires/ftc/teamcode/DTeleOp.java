@@ -22,7 +22,10 @@ public class DTeleOp extends RobotLinearOpMode {
     private DcMotor rightFrontDriveMotor = null;
     private DcMotor leftBackDriveMotor = null;
     private DcMotor rightBackDriveMotor = null;
+    private DcMotor intakeMotor = null;
     double halfPower;
+
+
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -42,6 +45,8 @@ public class DTeleOp extends RobotLinearOpMode {
 
 
             standardDrive();
+            intakeControl();
+
 
 
 
@@ -56,19 +61,21 @@ public class DTeleOp extends RobotLinearOpMode {
         double leftBackMotorPower;
         double rightBackMotorPower;
 
-        double axial = -gamepad1.right_stick_y;
-        double lateral = gamepad1.right_stick_x;
-        double yaw = -gamepad1.left_stick_x;
+        double axial = -gamepad1.right_stick_y; //forward & back
+        double lateral = -gamepad1.right_stick_x; //strafe
+        double yaw = gamepad1.left_stick_x; //turning
 
-        leftFrontMotorPower = axial - lateral + yaw;
+        leftFrontMotorPower = axial + lateral + yaw;
         rightFrontMotorPower = axial + lateral - yaw;
-        leftBackMotorPower = axial + lateral + yaw;
+        leftBackMotorPower = axial - lateral + yaw;
         rightBackMotorPower = axial - lateral - yaw;
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);
         leftBackDriveMotor.setPower(leftBackMotorPower);
         rightBackDriveMotor.setPower(rightBackMotorPower);
+
+
     }
 
     public void exponentialDrive() {
@@ -136,6 +143,20 @@ public class DTeleOp extends RobotLinearOpMode {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.update();
     }
+
+    public void intakeControl(){
+        double intakePower = -gamepad1.right_trigger;
+
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+
+
+        if(gamepad1.a) {
+            intakeMotor.setPower(-intakePower);
+        } else {
+            intakeMotor.setPower(intakePower);
+        }
+
+    }
     public void hPower(){
 
         if (gamepad1.right_trigger > 0.2){
@@ -163,6 +184,8 @@ public class DTeleOp extends RobotLinearOpMode {
         rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
     }
+
+
 
 }
 
