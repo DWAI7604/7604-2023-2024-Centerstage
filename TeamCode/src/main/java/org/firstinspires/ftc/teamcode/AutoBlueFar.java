@@ -30,109 +30,124 @@ import android.graphics.Color;
 import android.view.View;
 
 @Autonomous
-public class AutoMotorTest extends RobotLinearOpMode{
+public class AutoBlueFar extends RobotLinearOpMode{
 
     //Declaration of drive motors
     DcMotor rightFrontDriveMotor;
     DcMotor leftFrontDriveMotor;
     DcMotor rightBackDriveMotor;
     DcMotor leftBackDriveMotor;
+    private DcMotor intakeMotor = null;
 
     public void runOpMode() {
-
+        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         declareHardwareProperties();
+        OpenCvInternalCamera phoneCam;
+        SkystoneDeterminationPipelineBlueFar pipeline;
 
-        waitForStart();
+            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+            pipeline = new SkystoneDeterminationPipelineBlueFar();
+            phoneCam.setPipeline(pipeline);
 
-        
+            // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
+            // out when the RC activity is in portrait. We do our actual image processing assuming
+            // landscape orientation, though.
+            phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
+
+            phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+            {
+                @Override
+                public void onOpened()
+                {
+                    phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                }
+
+                @Override
+                public void onError(int errorCode)
+                {
+                    /*
+                     * This will be called if the camera could not be opened
+                     */
+                }
+            });
+
+            waitForStart();
 
 
+                telemetry.addData("Analysis", pipeline.getAnalysis());
+                telemetry.update();
 
+                //Wait to make sure the analysis is correct
+                sleep(50);
+          if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.CENTER) {
+              encoderDrive(.6, 28, MOVEMENT_DIRECTION.REVERSE);
 
+              while (colorSensor() != 1) {
+                  colorSensor();
+                  sensorDrive(.2, MOVEMENT_DIRECTION.REVERSE);
+              }
+              if (colorSensor() == 1) {
+                  motorKill();
+              }
+              purplePixelPlace();
+              sleep(200);
+              encoderDrive(.2, 3, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.2, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.5, 20, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.5, 90, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              intakeMotor.setPower(.5);
+              motorKill();
+          } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.LEFT) {
 
+              encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
 
+              while (colorSensor() != 1) {
+                  colorSensor();
+                  sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              }
+              if (colorSensor() == 1) {
+                  motorKill();
+              }
+              purplePixelPlace();
+              encoderDrive(.2, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.6, 70, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              intakeMotor.setPower(.5);
+              motorKill();
+          } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.RIGHT) {
 
-        sleep(60);
-        encoderDrive(.6,28,MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
 
-        while (colorSensor() != 1) {
-            colorSensor();
-            sensorDrive(.2, MOVEMENT_DIRECTION.FORWARD);
-        } if (colorSensor() == 1) {
-            motorKill();
-        sleep(1000);
-        }
-purplePixelPlace();
+              while (colorSensor() != 1) {
+                  colorSensor();
+                  sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              }
+              if (colorSensor() == 1) {
+                  motorKill();
+              }
+              purplePixelPlace();
+              encoderDrive(.2, 6, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.6, 90, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              intakeMotor.setPower(.5);
+              motorKill();
 
+          } else {
+              encoderDrive(.6, 50, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.6, 90, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
+              intakeMotor.setPower(.5);
+              motorKill();
 
-
-
-
-       /* encoderDrive(1,24,MOVEMENT_DIRECTION.STRAFE_RIGHT);
-
-        encoderDrive(1,24,MOVEMENT_DIRECTION.REVERSE);
-
-        encoderDrive(1,24,MOVEMENT_DIRECTION.STRAFE_LEFT);*/
+          }
+stop();
 
     }
 }
 
-class SkystoneDeterminationExampleBlue extends LinearOpMode
-{
-    OpenCvInternalCamera phoneCam;
-    SkystoneDeterminationPipeline pipeline;
 
-    @Override
-    public void runOpMode()
-    {
-        /**
-         * NOTE: Many comments have been omitted from this sample for the
-         * sake of conciseness. If you're just starting out with EasyOpenCv,
-         * you should take a look at {@link InternalCamera1Example} or its
-         * webcam counterpart, {@link WebcamExample} first.
-         */
-
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        pipeline = new SkystoneDeterminationPipeline();
-        phoneCam.setPipeline(pipeline);
-
-        // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
-        // out when the RC activity is in portrait. We do our actual image processing assuming
-        // landscape orientation, though.
-        phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
-
-        phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
-            }
-
-            @Override
-            public void onError(int errorCode)
-            {
-                /*
-                 * This will be called if the camera could not be opened
-                 */
-            }
-        });
-
-        waitForStart();
-
-        while (opModeIsActive())
-        {
-            telemetry.addData("Analysis", pipeline.getAnalysis());
-            telemetry.update();
-
-            // Don't burn CPU cycles busy-looping in this sample
-            sleep(50);
-        }
-    }
-
-    public static class SkystoneDeterminationPipeline extends OpenCvPipeline
+class SkystoneDeterminationPipelineBlueFar extends OpenCvPipeline
     {
         /*
          * An enum to define the skystone position
@@ -400,4 +415,4 @@ class SkystoneDeterminationExampleBlue extends LinearOpMode
             return position;
         }
     }
-}
+
