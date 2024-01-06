@@ -72,14 +72,24 @@ public class AutoRedFar extends RobotLinearOpMode{
             }
         });
 
-        waitForStart();
 
 
-        telemetry.addData("Analysis", pipeline.getAnalysis());
-        telemetry.update();
 
-        //Wait to make sure the analysis is correct
-        sleep(50);
+        while (!isStarted() && !isStopRequested())
+        {
+            telemetry.addData("Realtime analysis", pipeline.getAnalysis());
+            telemetry.update();
+
+            // Don't burn CPU cycles busy-looping in this sample
+            sleep(50);
+        }
+
+        /*
+         * The START command just came in: snapshot the current analysis now
+         * for later use. We must do this because the analysis will continue
+         * to change as the camera view changes once the robot starts moving!
+         */
+        sleep(2000);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.CENTER) {
             encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
 
@@ -94,12 +104,12 @@ public class AutoRedFar extends RobotLinearOpMode{
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.LEFT) {
 
             encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderDrive(.2, 15, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
@@ -107,26 +117,21 @@ public class AutoRedFar extends RobotLinearOpMode{
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.RIGHT) {
 
-            encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 1, MOVEMENT_DIRECTION.FORWARD );
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
-            while (colorSensor() != 1) {
-                colorSensor();
-                sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            }
-            if (colorSensor() == 1) {
-                motorKill();
-            }
             purplePixelPlace();
+            sleep(400);
             encoderDrive(.2, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
             intakeMotor.setPower(.5);
             motorKill();
 
         } else {
-            encoderDrive(.6, 50, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.6, 90, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.6, 50, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
             intakeMotor.setPower(.5);
             motorKill();

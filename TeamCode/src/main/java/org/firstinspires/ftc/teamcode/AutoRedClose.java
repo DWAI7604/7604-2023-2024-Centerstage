@@ -81,55 +81,45 @@ public class AutoRedClose extends RobotLinearOpMode{
         //Wait to make sure the analysis is correct
         sleep(50);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.CENTER) {
-            encoderDrive(.6, 28, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
 
-            while (colorSensor() != 1) {
-                colorSensor();
-                sensorDrive(.2, MOVEMENT_DIRECTION.REVERSE);
-            }
-            if (colorSensor() == 1) {
-                motorKill();
-            }
+
             purplePixelPlace();
-            sleep(200);
-            encoderDrive(.4, 40, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            sleep(400);
+            encoderDrive(.2, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             intakeMotor.setPower(.5);
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.LEFT) {
 
-            encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
-            while (colorSensor() != 1) {
-                colorSensor();
-                sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            }
-            if (colorSensor() == 1) {
-                motorKill();
-            }
+
             purplePixelPlace();
-            encoderDrive(.2, 3, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.6, 40, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            sleep(400);
+            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             intakeMotor.setPower(.5);
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.RIGHT) {
 
-            encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
-            while (colorSensor() != 1) {
-                colorSensor();
-                sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            }
-            if (colorSensor() == 1) {
-                motorKill();
-            }
+
             purplePixelPlace();
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            sleep(400);
+            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.2, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             intakeMotor.setPower(.5);
             motorKill();
 
         } else {
-            encoderDrive(.6, 50, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.6, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
+
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
             intakeMotor.setPower(.5);
             motorKill();

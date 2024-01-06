@@ -72,66 +72,61 @@ public class AutoBlueClose extends RobotLinearOpMode{
             }
         });
 
-        waitForStart();
 
 
-        telemetry.addData("Analysis", pipeline.getAnalysis());
-        telemetry.update();
 
-        //Wait to make sure the analysis is correct
-        sleep(50);
+        while (!isStarted() && !isStopRequested())
+        {
+            telemetry.addData("Realtime analysis", pipeline.getAnalysis());
+            telemetry.update();
+
+            // Don't burn CPU cycles busy-looping in this sample
+            sleep(50);
+        }
+
+        /*
+         * The START command just came in: snapshot the current analysis now
+         * for later use. We must do this because the analysis will continue
+         * to change as the camera view changes once the robot starts moving!
+         */
+        sleep(2000);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.CENTER) {
-            encoderDrive(.6, 28, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
 
-            while (colorSensor() != 1) {
-                colorSensor();
-                sensorDrive(.2, MOVEMENT_DIRECTION.REVERSE);
-            }
-            if (colorSensor() == 1) {
-                motorKill();
-            }
+
             purplePixelPlace();
-            sleep(200);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            sleep(400);
+            encoderDrive(.4,20, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
             intakeMotor.setPower(.5);
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.LEFT) {
+            encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
-            encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
 
-            while (colorSensor() != 1) {
-                colorSensor();
-                sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            }
-            if (colorSensor() == 1) {
-                motorKill();
-            }
             purplePixelPlace();
-            encoderDrive(.2, 4, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.6, 20, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            sleep(400);
+            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
             intakeMotor.setPower(.5);
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.RIGHT) {
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
-            encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
 
-            while (colorSensor() != 1) {
-                colorSensor();
-                sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            }
-            if (colorSensor() == 1) {
-                motorKill();
-            }
             purplePixelPlace();
-            encoderDrive(.2, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-
+            sleep(400);
+            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
             intakeMotor.setPower(.5);
             motorKill();
 
         } else {
-            encoderDrive(.6, 50, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.6, 90, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
             intakeMotor.setPower(.5);
             motorKill();
 
