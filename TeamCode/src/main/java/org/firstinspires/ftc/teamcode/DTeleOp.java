@@ -62,12 +62,12 @@ public class DTeleOp extends RobotLinearOpMode {
         double rightBackMotorPower;
 
         double axial = -gamepad1.right_stick_y; //forward & back
-        double lateral = -gamepad1.right_stick_x; //strafe
+        double lateral = gamepad1.right_stick_x; //strafe
         double yaw = gamepad1.left_stick_x; //turning
 
-        leftFrontMotorPower = axial + lateral + yaw;
+        leftFrontMotorPower = axial - lateral + yaw;
         rightFrontMotorPower = axial + lateral - yaw;
-        leftBackMotorPower = axial - lateral + yaw;
+        leftBackMotorPower = axial + lateral + yaw;
         rightBackMotorPower = axial - lateral - yaw;
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);

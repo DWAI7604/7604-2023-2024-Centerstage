@@ -154,12 +154,12 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             rightBackDriveMotor.setPower(0);
         }
 
-        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_RIGHT) {
+        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_LEFT) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget * 2 );
+            leftFrontDriveMotor.setTargetPosition(leftFrontTarget * 2 );
             rightFrontDriveMotor.setTargetPosition(2*(-rightFrontTarget + (int)(rightFrontTarget * 0.0016605117)));
-            leftBackDriveMotor.setTargetPosition(leftBackTarget * 2 );
+            leftBackDriveMotor.setTargetPosition(-leftBackTarget * 2 );
             rightBackDriveMotor.setTargetPosition((rightBackTarget - (int)(rightBackTarget * 0.0016605117))*2);
 
 
@@ -186,12 +186,12 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             rightBackDriveMotor.setPower(0);
         }
 
-        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_LEFT) {
+        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_RIGHT) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(leftFrontTarget * 2);
+            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget * 2);
             rightFrontDriveMotor.setTargetPosition((rightFrontTarget - (int)(rightFrontTarget * 0.0016605117))*2);
-            leftBackDriveMotor.setTargetPosition(-leftBackTarget * 2);
+            leftBackDriveMotor.setTargetPosition(leftBackTarget * 2);
             rightBackDriveMotor.setTargetPosition((-rightBackTarget + (int)(rightBackTarget * 0.0016605117))* 2);
 
             //Tells the motors to drive until they reach the target position
@@ -362,11 +362,13 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     public void sensorDrive(double power, MOVEMENT_DIRECTION movement_direction) {
         if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
 
-            //Sets the motor powers to the power entered on use
-            leftFrontDriveMotor.setPower(power);
-            rightFrontDriveMotor.setPower(power);
-            leftBackDriveMotor.setPower(power);
-            rightBackDriveMotor.setPower(power);
+            do {
+                //Sets the motor powers to the power entered on use
+                leftFrontDriveMotor.setPower(power);
+                rightFrontDriveMotor.setPower(power);
+                leftBackDriveMotor.setPower(power);
+                rightBackDriveMotor.setPower(power);
+            } while (colorSensor() == 0);
 
 
 
@@ -473,11 +475,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         Servo purplePlacer = null;
 
         purplePlacer = hardwareMap.get(Servo.class, "purplePlacer");
-        double start = purplePlacer.getPosition();
 
-        purplePlacer.setPosition(-180);
-        sleep(1000);
-        purplePlacer.setPosition(90);
+        purplePlacer.setPosition(100);
+        sleep(500);
+        purplePlacer.setPosition(0);
 
 
     }

@@ -45,6 +45,7 @@ public class AutoBlueFar extends RobotLinearOpMode{
         OpenCvInternalCamera phoneCam;
         SkystoneDeterminationPipelineBlueFar pipeline;
 
+
             int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
             phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
             pipeline = new SkystoneDeterminationPipelineBlueFar();
@@ -72,76 +73,82 @@ public class AutoBlueFar extends RobotLinearOpMode{
                 }
             });
 
-            waitForStart();
+        /*
+         * The INIT-loop:
+         * This REPLACES waitForStart!
+         */
+        while (!isStarted() && !isStopRequested())
+        {
+            telemetry.addData("Realtime analysis", pipeline.getAnalysis());
+            telemetry.update();
 
+            // Don't burn CPU cycles busy-looping in this sample
+            sleep(50);
+        }
 
-                telemetry.addData("Analysis", pipeline.getAnalysis());
-                telemetry.update();
+        /*
+         * The START command just came in: snapshot the current analysis now
+         * for later use. We must do this because the analysis will continue
+         * to change as the camera view changes once the robot starts moving!
+         */
+       sleep(2000);
 
-                //Wait to make sure the analysis is correct
-                sleep(50);
           if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.CENTER) {
-              encoderDrive(.6, 28, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
 
-              while (colorSensor() != 1) {
+
+
+
+
+              /*while (colorSensor() != 1 && opModeIsActive()) {
                   colorSensor();
-                  sensorDrive(.2, MOVEMENT_DIRECTION.REVERSE);
+                  sensorDrive(.1, MOVEMENT_DIRECTION.FORWARD);
               }
               if (colorSensor() == 1) {
                   motorKill();
-              }
+              }*/
               purplePixelPlace();
-              sleep(200);
-              encoderDrive(.2, 3, MOVEMENT_DIRECTION.REVERSE);
-              encoderDrive(.2, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.5, 20, MOVEMENT_DIRECTION.REVERSE);
-              encoderDrive(.5, 90, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              intakeMotor.setPower(.5);
+              sleep(400);
+              encoderDrive(.4, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.2, 15, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
+              intakeMotor.setPower(-1);
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.LEFT) {
 
-              encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.5, 20, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
-              while (colorSensor() != 1) {
-                  colorSensor();
-                  sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              }
-              if (colorSensor() == 1) {
-                  motorKill();
-              }
+
               purplePixelPlace();
-              encoderDrive(.2, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
-              encoderDrive(.6, 70, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.2, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               intakeMotor.setPower(.5);
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.RIGHT) {
 
-              encoderDrive(.5, 24, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.5, 25, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
-              while (colorSensor() != 1) {
-                  colorSensor();
-                  sensorDrive(.2, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              }
-              if (colorSensor() == 1) {
-                  motorKill();
-              }
+
               purplePixelPlace();
-              encoderDrive(.2, 6, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
-              encoderDrive(.6, 90, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               intakeMotor.setPower(.5);
               motorKill();
 
           } else {
-              encoderDrive(.6, 50, MOVEMENT_DIRECTION.REVERSE);
-              encoderDrive(.6, 90, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.6, 50, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
               intakeMotor.setPower(.5);
               motorKill();
 
           }
-stop();
+
 
     }
 }
