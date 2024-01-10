@@ -117,26 +117,30 @@ public class AutoBlueFar extends RobotLinearOpMode{
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.LEFT) {
 
-              encoderDrive(.5, 20, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.5, 25, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
               purplePixelPlace();
-              encoderDrive(.2, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              sleep(400);
+              encoderDrive(.2, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.6, 50, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.1, 5, MOVEMENT_DIRECTION.REVERSE);
               intakeMotor.setPower(.5);
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.RIGHT) {
 
               encoderDrive(.5, 25, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.3, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
 
               purplePixelPlace();
-              encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              sleep(400);
+              encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.6, 50, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.1, 10, MOVEMENT_DIRECTION.REVERSE);
               intakeMotor.setPower(.5);
               motorKill();
 

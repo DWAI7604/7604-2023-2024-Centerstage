@@ -91,41 +91,43 @@ public class AutoRedFar extends RobotLinearOpMode{
          */
         sleep(2000);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.CENTER) {
-            encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 31, MOVEMENT_DIRECTION.FORWARD);
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.4, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.2, 15, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.5, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 7, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.5, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+
             intakeMotor.setPower(-1);
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.LEFT) {
 
             encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.3, 4, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 15, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.3, 4, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 25, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.5, 50, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+
             intakeMotor.setPower(-1);
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.RIGHT) {
 
-            encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.2, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.2, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 26, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.5, 50, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             intakeMotor.setPower(.5);
             motorKill();
 
@@ -342,14 +344,14 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
         /*
          * Find the max of the 3 averages
          */
-        int maxOneTwo = Math.max(avg1, avg2);
-        int max = Math.max(maxOneTwo, avg3);
+        int minOneTwo = Math.min(avg1, avg2);
+        int min = Math.min(minOneTwo, avg3);
 
         /*
          * Now that we found the max, we actually need to go and
          * figure out which sample region that value was from
          */
-        if(max == avg1) // Was it from region 1?
+        if(min == avg1) // Was it from region 1?
         {
             position = SkystonePosition.LEFT; // Record our analysis
 
@@ -364,7 +366,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(max == avg2) // Was it from region 2?
+        else if(min == avg2) // Was it from region 2?
         {
             position = SkystonePosition.CENTER; // Record our analysis
 
@@ -379,7 +381,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(max == avg3) // Was it from region 3?
+        else if(min == avg3) // Was it from region 3?
         {
             position = SkystonePosition.RIGHT; // Record our analysis
 

@@ -91,7 +91,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftBackTarget = leftBackDriveMotor.getCurrentPosition() + (int) (inches * TICKS_PER_INCH);
         rightBackTarget = rightBackDriveMotor.getCurrentPosition() + (int) (inches * TICKS_PER_INCH);
 
-        if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
+        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
 
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(leftFrontTarget);
@@ -124,7 +124,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
         }
 
-        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
+        if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
 
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(-leftFrontTarget );
@@ -154,7 +154,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             rightBackDriveMotor.setPower(0);
         }
 
-        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_LEFT) {
+        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_RIGHT) {
 
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(leftFrontTarget * 2 );
@@ -186,7 +186,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             rightBackDriveMotor.setPower(0);
         }
 
-        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_RIGHT) {
+        if (movement_direction == MOVEMENT_DIRECTION.STRAFE_LEFT) {
 
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(-leftFrontTarget * 2);

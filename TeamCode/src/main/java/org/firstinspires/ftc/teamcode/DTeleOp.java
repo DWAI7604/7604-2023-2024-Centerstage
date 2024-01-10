@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -44,8 +45,9 @@ public class DTeleOp extends RobotLinearOpMode {
         while (opModeIsActive()) {
 
 
-            standardDrive();
+            exponentialDrive();
             intakeControl();
+            planeLauncher();
 
 
 
@@ -75,6 +77,13 @@ public class DTeleOp extends RobotLinearOpMode {
         leftBackDriveMotor.setPower(leftBackMotorPower);
         rightBackDriveMotor.setPower(rightBackMotorPower);
 
+        if (gamepad1.dpad_down) {
+            leftFrontDriveMotor.setPower(leftFrontMotorPower/2);
+            rightFrontDriveMotor.setPower(rightFrontMotorPower/2);
+            leftBackDriveMotor.setPower(leftBackMotorPower/2);
+            rightBackDriveMotor.setPower(rightBackMotorPower/2);
+        }
+
 
     }
 
@@ -86,17 +95,17 @@ public class DTeleOp extends RobotLinearOpMode {
         double rightBackMotorPower;
 
 
-        double axial = gamepad1.right_stick_y; //forward and back power
-        double lateral = gamepad1.right_stick_x; //left and right power
+        double axial = -Math.atan(gamepad1.right_stick_y); //forward and back power
+        double lateral = Math.atan(gamepad1.right_stick_x); //left and right power
         double yaw = gamepad1.left_stick_x; //turning
 
 
 
 
-        leftFrontMotorPower = axial - lateral + yaw;
-        rightFrontMotorPower = axial + lateral - yaw;
-        leftBackMotorPower = axial + lateral + yaw;
-        rightBackMotorPower = axial - lateral - yaw;
+        leftFrontMotorPower = axial - lateral + (.5*yaw);
+        rightFrontMotorPower = axial + lateral - (.5*yaw);
+        leftBackMotorPower = axial + lateral + (.5*yaw);
+        rightBackMotorPower = axial - lateral - (.5*yaw);
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);
@@ -150,10 +159,10 @@ public class DTeleOp extends RobotLinearOpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 
-        if(gamepad1.a) {
-            intakeMotor.setPower(-intakePower);
-        } else {
-            intakeMotor.setPower(intakePower);
+        if(gamepad1.right_bumper) {
+            intakeMotor.setPower(.1);
+        } else if (gamepad1.left_bumper) {
+            intakeMotor.setPower(-.1);
         }
 
     }
@@ -170,6 +179,18 @@ public class DTeleOp extends RobotLinearOpMode {
         }
 
 
+        }
+
+        public void planeLauncher() {
+
+            Servo planeLauncher = null;
+
+            planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
+
+            if (gamepad1.x) {
+                planeLauncher.setPosition(100);
+
+            }
         }
     public void declareHardwareProperties() {
 
