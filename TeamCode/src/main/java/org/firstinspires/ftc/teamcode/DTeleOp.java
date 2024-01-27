@@ -159,11 +159,8 @@ public class DTeleOp extends RobotLinearOpMode {
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 
-        if(gamepad1.right_bumper) {
-            intakeMotor.setPower(.1);
-        } else if (gamepad1.left_bumper) {
-            intakeMotor.setPower(-.1);
-        }
+        intakeMotor.setPower(-gamepad1.right_trigger);
+        intakeMotor.setPower(gamepad1.left_trigger);
 
     }
     public void hPower(){
@@ -188,7 +185,7 @@ public class DTeleOp extends RobotLinearOpMode {
             planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
 
             if (gamepad1.x) {
-                planeLauncher.setPosition(100);
+                planeLauncher.setPosition(0);
 
             }
         }

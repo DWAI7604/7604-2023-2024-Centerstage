@@ -37,6 +37,37 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.text.method.MovementMethod;
+import android.view.View;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.SwitchableLight;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * This file is where each method should be written or referenced. Then when writing Autos and TeleOps,
@@ -57,6 +88,17 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     DcMotor leftFrontDriveMotor;
     DcMotor rightBackDriveMotor;
     DcMotor leftBackDriveMotor;
+
+    AprilTagProcessor aprilTag;
+    VisionPortal visionPortal;
+    boolean USE_WEBCAM = false;  // true for webcam, false for phone camera
+    boolean placingPixel = false;
+    boolean searching;
+    boolean aTagSeen = false;
+    private ElapsedTime runtime = new ElapsedTime();
+
+
+
 
 
 
@@ -268,27 +310,43 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         }
     }*/
 
-    /*public void encoderTurn(double power, double degrees, TURN_DIRECTION turn_direction) {
+    public void encoderTurn(double power, double degrees, TURN_DIRECTION turn_direction) {
 
 
 
 
 
         //Declaration of important variables
+//        final double WHEEL_DIAMETER_INCHES = 3.77953;
+//        final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
+//        final double DRIVE_GEAR_REDUCTION = 1.0;
+//        final double COUNTS_PER_ROTATION_AT_MOTOR = 537.7;
+//        final double TICKS_PER_ROTATION = (COUNTS_PER_ROTATION_AT_MOTOR);
+//
+//        final double TICKS_PER_INCH = (TICKS_PER_ROTATION/WHEEL_CIRCUMFERENCE_INCHES);
+//        //Measure in inches
+//        final double ROBOT_LENGTH = 13;
+//        final double ROBOT_WIDTH = (15 +(7/8));
+//        //Uses pythagorean theorem to find the radius from the center of the robot to a point on its turning circle and subsequently the circumference of said circle
+//        final double ROBOT_DIAMETER = (Math.sqrt(Math.pow(ROBOT_LENGTH, 2) + Math.pow(ROBOT_WIDTH, 2)));
+//        final double ROBOT_CIRCUMFERENCE = (ROBOT_DIAMETER * 3.141592653589793);
+//        //Finds the number of degrees each tick covers
+//        final double INCHES_PER_DEGREE = (ROBOT_CIRCUMFERENCE/360);
+//        final double TICKS_PER_DEGREE = (TICKS_PER_INCH * INCHES_PER_DEGREE);
+
         final double WHEEL_DIAMETER_INCHES = 3.77953;
         final double WHEEL_CIRCUMFERENCE_INCHES = (WHEEL_DIAMETER_INCHES * 3.141592653589793);
-        final double DRIVE_GEAR_REDUCTION = 1.0;
-        final double TICKS_PER_ROTATION = 150;
-        final double TICKS_PER_INCH = (TICKS_PER_ROTATION / WHEEL_CIRCUMFERENCE_INCHES);
-        //Measure in inches
-        final double ROBOT_LENGTH = 14;
-        final double ROBOT_WIDTH = 12;
-        //Uses pythagorean theorem to find the radius from the center of the robot to a point on its turning circle and subsequently the circumference of said circle
-        final double ROBOT_DIAMETER = (Math.sqrt(Math.pow(ROBOT_LENGTH, 2) + Math.pow(ROBOT_WIDTH, 2)));
-        final double ROBOT_CIRCUMFERENCE = (ROBOT_DIAMETER * 3.141592653589793);
-        //Finds the number of degrees each tick covers
-        final double INCHES_PER_DEGREE = (ROBOT_CIRCUMFERENCE/360);
-        final double TICKS_PER_DEGREE = (TICKS_PER_INCH * INCHES_PER_DEGREE);
+        final double TICKS_PER_ROTATION = (537.7);
+        final double ROBOT_LENGTH = 13;
+        final double ROBOT_WIDTH = (15 +(7/8));
+        final double TICKS_PER_INCH = (TICKS_PER_ROTATION/WHEEL_CIRCUMFERENCE_INCHES);
+
+        final double TURNING_DISTANCE = ((degrees/360) * 3.141592653589793 * Math.sqrt((Math.pow(ROBOT_LENGTH, 2)) + Math.pow(ROBOT_WIDTH, 2)));
+        final double TICK_TARGET = TURNING_DISTANCE * TICKS_PER_INCH;
+
+
+
+
 
         declareHardwareProperties();
 
@@ -298,6 +356,12 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         int leftBackTarget;
         int rightBackTarget;
 
+        leftFrontDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
         //Resets motor encoders to 0 ticks
         leftFrontDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFrontDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -305,10 +369,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         rightBackDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         //Sets the taret # of ticks by intaking the number of desired inches of movement and converting to ticks
-        leftFrontTarget = leftFrontDriveMotor.getCurrentPosition() + (int) (TICKS_PER_DEGREE);
-        rightFrontTarget = rightFrontDriveMotor.getCurrentPosition() + (int) (TICKS_PER_DEGREE);
-        leftBackTarget = leftBackDriveMotor.getCurrentPosition() + (int) (TICKS_PER_DEGREE);
-        rightBackTarget = rightBackDriveMotor.getCurrentPosition() + (int) (TICKS_PER_DEGREE);
+        leftFrontTarget = leftFrontDriveMotor.getCurrentPosition() + (int) (TICK_TARGET);
+        rightFrontTarget = rightFrontDriveMotor.getCurrentPosition() + (int) (TICK_TARGET);
+        leftBackTarget = leftBackDriveMotor.getCurrentPosition() + (int) (TICK_TARGET);
+        rightBackTarget = rightBackDriveMotor.getCurrentPosition() + (int) (TICK_TARGET);
 
         if(turn_direction == TURN_DIRECTION.TURN_RIGHT) {
 
@@ -329,6 +393,15 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             rightFrontDriveMotor.setPower(power);
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
+
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
+
+            }
+
+            leftFrontDriveMotor.setPower(0);
+            rightFrontDriveMotor.setPower(0);
+            leftBackDriveMotor.setPower(0);
+            rightBackDriveMotor.setPower(0);
         }
 
         if(turn_direction == TURN_DIRECTION.TURN_LEFT) {
@@ -336,8 +409,8 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(-leftFrontTarget);
             rightFrontDriveMotor.setTargetPosition(rightFrontTarget);
-            leftBackDriveMotor.setTargetPosition(-leftBackTarget);
-            rightBackDriveMotor.setTargetPosition(rightBackTarget);
+            leftBackDriveMotor.setTargetPosition(-leftBackTarget );
+            rightBackDriveMotor.setTargetPosition(rightBackTarget );
 
             //Tells the motors to drive until they reach the target position
             leftFrontDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -350,6 +423,16 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             rightFrontDriveMotor.setPower(power);
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
+
+            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
+
+            }
+
+            leftFrontDriveMotor.setPower(0);
+            rightFrontDriveMotor.setPower(0);
+            leftBackDriveMotor.setPower(0);
+            rightBackDriveMotor.setPower(0);
+
         }
 
         leftFrontDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -357,7 +440,53 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
-*/
+
+    private void initAprilTag() {
+
+        USE_WEBCAM = true;
+        // Create the AprilTag processor the easy way.
+        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+
+        // Create the vision portal the easy way.
+        if (USE_WEBCAM) {
+            visionPortal = VisionPortal.easyCreateWithDefaults(hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
+        } else {
+            visionPortal = VisionPortal.easyCreateWithDefaults(
+                    BuiltinCameraDirection.BACK, aprilTag);
+        }
+    }
+
+    public boolean[] getAprilTags()
+    {
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        telemetry.addData("# AprilTags Detected", currentDetections.size());
+        boolean[] aprilTags = new boolean[7];
+        // Step through the list of detections and display info for each one.
+        for (AprilTagDetection detection : currentDetections)
+        {
+            if (detection.metadata != null)
+            {
+                aprilTags[detection.id] = true;
+                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+            }
+            else
+            {
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
+
+        }   // end for() loop
+        // Add "key" information to telemetry
+        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
+        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
+        telemetry.addLine("RBE = Range, Bearing & Elevation");
+        return aprilTags;
+    }// end method telemetryAprilTag()
+
+
 
     public void sensorDrive(double power, MOVEMENT_DIRECTION movement_direction) {
         if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
@@ -479,6 +608,26 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         purplePlacer.setPosition(100);
         sleep(500);
         purplePlacer.setPosition(0);
+
+
+
+
+    }
+
+    public void yellowPixelPlace() {
+
+        Servo yellowPlacer = null;
+
+        yellowPlacer = hardwareMap.get(Servo.class, "yellowPlacer");
+
+
+
+        yellowPlacer.setPosition(180);
+        sleep(400);
+        yellowPlacer.setPosition(-40);
+        sleep(500);
+        yellowPlacer.setPosition(270);
+        sleep(400);
 
 
     }

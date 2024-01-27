@@ -61,7 +61,7 @@ public class AutoBlueFar extends RobotLinearOpMode{
                 @Override
                 public void onOpened()
                 {
-                    phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                    phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
                 }
 
                 @Override

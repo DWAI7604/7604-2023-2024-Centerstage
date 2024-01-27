@@ -60,7 +60,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
             @Override
             public void onOpened()
             {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
             }
 
             @Override
@@ -96,9 +96,9 @@ public class AutoBlueClose extends RobotLinearOpMode{
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.4,30, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.5, 30, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            intakeMotor.setPower(.5);
+
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.LEFT) {
             encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
