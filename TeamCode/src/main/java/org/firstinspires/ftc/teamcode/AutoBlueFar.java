@@ -113,7 +113,7 @@ public class AutoBlueFar extends RobotLinearOpMode{
               encoderDrive(.2, 15, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
-              intakeMotor.setPower(-1);
+
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.LEFT) {
 
@@ -127,7 +127,7 @@ public class AutoBlueFar extends RobotLinearOpMode{
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.6, 50, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.1, 5, MOVEMENT_DIRECTION.REVERSE);
-              intakeMotor.setPower(.5);
+
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.RIGHT) {
 
@@ -141,14 +141,14 @@ public class AutoBlueFar extends RobotLinearOpMode{
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.6, 50, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.1, 10, MOVEMENT_DIRECTION.REVERSE);
-              intakeMotor.setPower(.5);
+
               motorKill();
 
           } else {
               encoderDrive(.6, 50, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
-              intakeMotor.setPower(.5);
+
               motorKill();
 
           }

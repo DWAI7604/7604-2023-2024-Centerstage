@@ -68,6 +68,13 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 
 /**
  * This file is where each method should be written or referenced. Then when writing Autos and TeleOps,
@@ -133,7 +140,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftBackTarget = leftBackDriveMotor.getCurrentPosition() + (int) (inches * TICKS_PER_INCH);
         rightBackTarget = rightBackDriveMotor.getCurrentPosition() + (int) (inches * TICKS_PER_INCH);
 
-        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
+        if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
 
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(leftFrontTarget);
@@ -166,7 +173,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
         }
 
-        if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
+        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
 
             //Sets the target # of ticks to the target position of the motors
             leftFrontDriveMotor.setTargetPosition(-leftFrontTarget );
@@ -186,7 +193,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
+            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
 
             }
             //Kills the motors to prepare for next call of method
@@ -199,9 +206,9 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if (movement_direction == MOVEMENT_DIRECTION.STRAFE_RIGHT) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(leftFrontTarget * 2 );
+            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget * 2 );
             rightFrontDriveMotor.setTargetPosition(2*(-rightFrontTarget + (int)(rightFrontTarget * 0.0016605117)));
-            leftBackDriveMotor.setTargetPosition(-leftBackTarget * 2 );
+            leftBackDriveMotor.setTargetPosition(leftBackTarget * 2 );
             rightBackDriveMotor.setTargetPosition((rightBackTarget - (int)(rightBackTarget * 0.0016605117))*2);
 
 
@@ -217,7 +224,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
+            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -231,10 +238,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         if (movement_direction == MOVEMENT_DIRECTION.STRAFE_LEFT) {
 
             //Sets the target # of ticks to the target position of the motors
-            leftFrontDriveMotor.setTargetPosition(-leftFrontTarget * 2);
+            leftFrontDriveMotor.setTargetPosition(leftFrontTarget * 2);
             rightFrontDriveMotor.setTargetPosition((rightFrontTarget - (int)(rightFrontTarget * 0.0016605117))*2);
-            leftBackDriveMotor.setTargetPosition(leftBackTarget * 2);
-            rightBackDriveMotor.setTargetPosition((-rightBackTarget + (int)(rightBackTarget * 0.0016605117))* 2);
+            leftBackDriveMotor.setTargetPosition(-leftBackTarget * 2);
+            rightBackDriveMotor.setTargetPosition(-(rightBackTarget + (int)(rightBackTarget * 0.0016605117))* 2);
 
             //Tells the motors to drive until they reach the target position
             leftFrontDriveMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -248,7 +255,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
+            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -394,7 +401,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
+            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -424,7 +431,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             leftBackDriveMotor.setPower(power);
             rightBackDriveMotor.setPower(power);
 
-            while (leftBackDriveMotor.isBusy() && opModeIsActive()) {
+            while (rightFrontDriveMotor.isBusy() && opModeIsActive()) {
 
             }
 
@@ -441,7 +448,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         rightBackDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
-    private void initAprilTag() {
+    public void initAprilTag() {
 
         USE_WEBCAM = true;
         // Create the AprilTag processor the easy way.
@@ -484,28 +491,127 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
         telemetry.addLine("RBE = Range, Bearing & Elevation");
         return aprilTags;
-    }// end method telemetryAprilTag()
+    }// end method telemetryAprilTag
+
+    public void aprilTagCentering() {
+
+        List<AprilTagDetection> currentDetection = aprilTag.getDetections();
+
+        for (AprilTagDetection detection : currentDetection)
+        {
+            if (detection.metadata != null)
+            {
+                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
+                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
+                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
+                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
+            }
+            else
+            {
+                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
+                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
+            }
 
 
 
-    public void sensorDrive(double power, MOVEMENT_DIRECTION movement_direction) {
+        }   // end for() loop
+
+
+
+    }
+
+
+
+
+    public void colorSensorDrive(double power, MOVEMENT_DIRECTION movement_direction) {
         if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
 
-            do {
-                //Sets the motor powers to the power entered on use
-                leftFrontDriveMotor.setPower(power);
-                rightFrontDriveMotor.setPower(power);
-                leftBackDriveMotor.setPower(power);
-                rightBackDriveMotor.setPower(power);
-            } while (colorSensor() == 0);
+             while (colorSensor() == 0) {
+                 leftFrontDriveMotor.setPower(power);
+                 rightFrontDriveMotor.setPower(power);
+                 leftBackDriveMotor.setPower(power);
+                 rightBackDriveMotor.setPower(power);
+             }
+             motorKill();
+        }
+    }
+
+    public double distanceSensor(SENSOR_DIRECTION sensor_direction) {
+        DistanceSensor sensorDistance = null;
+        double distance;
+
+        if (sensor_direction == SENSOR_DIRECTION.REAR) {
+            sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance_rear");
+
+            Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
 
 
+        } else if (sensor_direction == SENSOR_DIRECTION.FRONT) {
+            sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance_front");
+
+            Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
 
 
+        } else if (sensor_direction == SENSOR_DIRECTION.LEFT) {
+            sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance_left");
+
+            Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
 
 
+        } else if (sensor_direction == SENSOR_DIRECTION.RIGHT) {
+            sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance_right");
+
+            Rev2mDistanceSensor sensorTimeOfFlight = (Rev2mDistanceSensor) sensorDistance;
 
         }
+        // you can use this as a regular DistanceSensor.
+        return sensorDistance.getDistance(DistanceUnit.INCH);
+
+
+
+        // you can also cast this to a Rev2mDistanceSensor if you want to use added
+        // methods associated with the Rev2mDistanceSensor class.
+
+    }
+    public void distSensorDrive(double inputPower, double distanceFromObjectIN, MOVEMENT_DIRECTION movement_direction) {
+        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
+//            do {
+
+                distanceSensor(SENSOR_DIRECTION.REAR);
+//            double power = Math.log(distanceSensor(SENSOR_DIRECTION.REAR) - distanceFromObjectCM);
+//            if (power > inputPower) {
+//                power = inputPower;
+//            }
+
+            encoderDrive(inputPower, (distanceSensor(SENSOR_DIRECTION.REAR) - 5), MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.1, 4, MOVEMENT_DIRECTION.REVERSE);
+
+
+//                    leftFrontDriveMotor.setPower(-power);
+//                    rightFrontDriveMotor.setPower(-power);
+//                    leftBackDriveMotor.setPower(-power);
+//                    rightBackDriveMotor.setPower(-power);
+//                    sleep(200);
+//                } while (distanceFromObjectCM > distanceSensor(SENSOR_DIRECTION.REAR));
+
+
+//            while (distanceFromObjectCM >= distanceSensor(SENSOR_DIRECTION.REAR)) {
+//
+//                double power = Math.log(distanceSensor(SENSOR_DIRECTION.REAR));
+//                if (power > inputPower) {
+//                    power = inputPower;
+//                }
+//                leftFrontDriveMotor.setPower(power);
+//                rightFrontDriveMotor.setPower(power);
+//                leftBackDriveMotor.setPower(power);
+//                rightBackDriveMotor.setPower(power);
+//                sleep(50);
+//            }
+//            if (distanceFromObjectCM <= distanceSensor(SENSOR_DIRECTION.REAR)) {
+//                motorKill();
+//            }
+            }
+
     }
     public float colorSensor() {
         int colorValue = 0;
@@ -621,14 +727,10 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         yellowPlacer = hardwareMap.get(Servo.class, "yellowPlacer");
 
 
-
-        yellowPlacer.setPosition(180);
-        sleep(400);
-        yellowPlacer.setPosition(-40);
-        sleep(500);
-        yellowPlacer.setPosition(270);
-        sleep(400);
-
+        yellowPlacer.setPosition(355);
+        sleep(2000);
+        yellowPlacer.setPosition(0);
+        sleep(2000);
 
     }
 
@@ -1304,6 +1406,14 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     enum LIFT_DIRECTION {
         DOWN,
         UP
+    }
+
+    enum SENSOR_DIRECTION {
+        FRONT,
+        REAR,
+        LEFT,
+        RIGHT
+
     }
 
 

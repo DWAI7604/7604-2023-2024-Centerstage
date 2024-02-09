@@ -46,12 +46,15 @@ public class AutoMotorTesting extends RobotLinearOpMode{
     DcMotor leftBackDriveMotor;
 
 
-
+@Override
     public void runOpMode() {
         waitForStart();
         declareHardwareProperties();
-        yellowPixelPlace();
-        sleep(2000);
+
+       distanceSensor(SENSOR_DIRECTION.REAR);
+       distSensorDrive(3, 2, MOVEMENT_DIRECTION.REVERSE);
+        telemetry.addData("Distance", distanceSensor(SENSOR_DIRECTION.REAR));
+        telemetry.update();
 
     }
 }

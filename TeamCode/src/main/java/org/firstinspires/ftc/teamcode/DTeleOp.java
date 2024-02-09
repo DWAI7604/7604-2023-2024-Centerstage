@@ -47,7 +47,8 @@ public class DTeleOp extends RobotLinearOpMode {
 
             exponentialDrive();
             intakeControl();
-            planeLauncher();
+            //planeLauncher();
+            //hangerControl();
 
 
 
@@ -103,9 +104,9 @@ public class DTeleOp extends RobotLinearOpMode {
 
 
         leftFrontMotorPower = axial - lateral + (.5*yaw);
-        rightFrontMotorPower = axial + lateral - (.5*yaw);
+        rightFrontMotorPower = axial - lateral - (.5*yaw);
         leftBackMotorPower = axial + lateral + (.5*yaw);
-        rightBackMotorPower = axial - lateral - (.5*yaw);
+        rightBackMotorPower = axial + lateral - (.5*yaw);
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);
@@ -184,10 +185,24 @@ public class DTeleOp extends RobotLinearOpMode {
 
             planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
 
-            if (gamepad1.x) {
+
+
+            if (gamepad2.x) {
                 planeLauncher.setPosition(0);
 
             }
+        }
+
+        public void hangerControl() {
+        DcMotor leftHanger = null;
+        DcMotor rightHanger = null;
+
+        leftHanger = hardwareMap.get(DcMotor.class, "leftHanger");
+        rightHanger = hardwareMap.get(DcMotor.class, "rightHanger");
+
+        leftHanger.setPower(-gamepad2.left_stick_y);
+        rightHanger.setPower(gamepad2.right_stick_y);
+
         }
     public void declareHardwareProperties() {
 

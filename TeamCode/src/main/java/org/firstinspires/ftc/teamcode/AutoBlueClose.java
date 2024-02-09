@@ -110,7 +110,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
             encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderDrive(.2, 25, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            intakeMotor.setPower(.5);
+
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.RIGHT) {
             encoderDrive(.4, 26, MOVEMENT_DIRECTION.FORWARD);
@@ -122,12 +122,12 @@ public class AutoBlueClose extends RobotLinearOpMode{
             encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.4, 25, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            intakeMotor.setPower(.5);
+
             motorKill();
 
         } else {
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            intakeMotor.setPower(.5);
+
             motorKill();
 
         }

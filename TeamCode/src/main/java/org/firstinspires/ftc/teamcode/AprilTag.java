@@ -68,7 +68,7 @@ public class AprilTag extends RobotLinearOpMode {
     /**
      * Initialize the AprilTag processor.
      */
-    private void initAprilTag() {
+    public void initAprilTag() {
 
         // Create the AprilTag processor the easy way.
         aprilTag = AprilTagProcessor.easyCreateWithDefaults();

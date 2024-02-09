@@ -86,17 +86,27 @@ public class AutoRedClose extends RobotLinearOpMode{
          * for later use. We must do this because the analysis will continue
          * to change as the camera view changes once the robot starts moving!
          */
-        sleep(2000);
+        sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.CENTER) {
-            encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
-
+            encoderDrive(.4, 38.5, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.2, 4, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.4,29, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            intakeMotor.setPower(.5);
-            
+            encoderDrive(.4, 16, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 11, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.4, 140, TURN_DIRECTION.TURN_LEFT);
+            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.1, 3, MOVEMENT_DIRECTION.STRAFE_LEFT);
+
+
+            yellowPixelPlace();
+            sleep(400);
+            encoderDrive(.4, 4, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.2, 8, MOVEMENT_DIRECTION.REVERSE);
+
+
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.LEFT) {
             encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
@@ -108,7 +118,7 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderDrive(.2, 25, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            intakeMotor.setPower(.5);
+
 
             yellowPixelPlace();
             sleep(400);
@@ -123,12 +133,12 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.4, 25, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            intakeMotor.setPower(.5);
+
             motorKill();
 
         } else {
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            intakeMotor.setPower(.5);
+
             motorKill();
 
         }
