@@ -100,7 +100,7 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderDrive(.1, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
-            //yellowPixelPlace();
+            yellowPixelPlace();
             sleep(400);
             encoderDrive(.4, 4, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.4, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
@@ -121,6 +121,8 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderTurn(.4, 140, TURN_DIRECTION.TURN_LEFT);
             encoderDrive(.2, 1.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+            yellowPixelPlace();
+            sleep(400);
 
             encoderDrive(.4, 10, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.4, 16, MOVEMENT_DIRECTION.STRAFE_LEFT);
@@ -146,7 +148,7 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderTurn(.5, 140, TURN_DIRECTION.TURN_LEFT);
             encoderDrive(.3, 3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             distSensorDrive(.4,3, MOVEMENT_DIRECTION.REVERSE);
-            //yellowPixelPlace();
+            yellowPixelPlace();
             sleep(400);
             encoderDrive(.3, 10, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);

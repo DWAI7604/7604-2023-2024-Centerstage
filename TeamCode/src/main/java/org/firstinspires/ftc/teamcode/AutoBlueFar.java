@@ -120,6 +120,7 @@ public class AutoBlueFar extends RobotLinearOpMode{
               encoderTurn(.4, 135, TURN_DIRECTION.TURN_RIGHT);
               encoderDrive(.3, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+              yellowPixelPlace();
               sleep(400);
               encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
@@ -139,12 +140,14 @@ public class AutoBlueFar extends RobotLinearOpMode{
               encoderDrive(.2, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.6, 45, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              sleep(1500);
+              sleep(4000);
 
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
               encoderTurn(.4,135, TURN_DIRECTION.TURN_RIGHT);
               encoderDrive(.2, 3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+              yellowPixelPlace();
+              sleep(400);
               encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.4, 16, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.4, 8, MOVEMENT_DIRECTION.REVERSE);
@@ -161,12 +164,13 @@ public class AutoBlueFar extends RobotLinearOpMode{
               encoderDrive(.3, 4.5, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.6, 40, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              sleep(1500);
+              sleep(4000);
 
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
               encoderTurn(.4, 135, TURN_DIRECTION.TURN_RIGHT);
               encoderDrive(.3, 1, MOVEMENT_DIRECTION.STRAFE_LEFT);
               distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+              yellowPixelPlace();
               sleep(400);
               encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.4, 11, MOVEMENT_DIRECTION.STRAFE_LEFT);

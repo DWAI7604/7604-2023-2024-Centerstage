@@ -104,7 +104,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
             encoderDrive(.1, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
 
-            //yellowPixelPlace();
+            yellowPixelPlace();
             sleep(400);
             encoderDrive(.4, 4, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_RIGHT);
@@ -113,18 +113,18 @@ public class AutoBlueClose extends RobotLinearOpMode{
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.LEFT) {
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.3, 8.5, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.4, 9, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 8.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderDrive(.4, 12, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderTurn(.3, 135, TURN_DIRECTION.TURN_RIGHT);
 
             distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
-            //yellowPixelPlace();
+            yellowPixelPlace();
             sleep(400);
             encoderDrive(.3, 6, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
@@ -145,6 +145,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
             encoderDrive(.3,3, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.1, 3, MOVEMENT_DIRECTION.REVERSE);
+            yellowPixelPlace();
             sleep(400);
             encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.4, 18, MOVEMENT_DIRECTION.STRAFE_RIGHT);
