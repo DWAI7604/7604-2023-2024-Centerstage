@@ -40,7 +40,7 @@ public class AutoRedClose extends RobotLinearOpMode{
     private DcMotor intakeMotor = null;
 
     public void runOpMode() {
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         declareHardwareProperties();
         OpenCvInternalCamera phoneCam;
         SkystoneDeterminationPipelineRedClose pipeline;
@@ -88,8 +88,8 @@ public class AutoRedClose extends RobotLinearOpMode{
          */
         sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.CENTER) {
-            encoderDrive(.4, 38.5, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.2, 4, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 39, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.2, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
             purplePixelPlace();
             sleep(400);
@@ -97,43 +97,60 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderDrive(.4, 11, MOVEMENT_DIRECTION.REVERSE);
             encoderTurn(.4, 140, TURN_DIRECTION.TURN_LEFT);
             distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.1, 3, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.1, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
-            yellowPixelPlace();
+            //yellowPixelPlace();
             sleep(400);
             encoderDrive(.4, 4, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.2, 8, MOVEMENT_DIRECTION.REVERSE);
 
 
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.LEFT) {
             encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.3, 5, MOVEMENT_DIRECTION.FORWARD);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 25, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.3, 2, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.3, 20, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderTurn(.4, 140, TURN_DIRECTION.TURN_LEFT);
+            encoderDrive(.2, 1.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 16, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 13, MOVEMENT_DIRECTION.REVERSE);
 
 
-            yellowPixelPlace();
+
+            //yellowPixelPlace();
             sleep(400);
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.RIGHT) {
-            encoderDrive(.4, 25, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 32, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 3.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.4, 25, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
+            encoderDrive(.2, 2, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.3, 6, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderTurn(.5, 140, TURN_DIRECTION.TURN_LEFT);
+            encoderDrive(.3, 3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            distSensorDrive(.4,3, MOVEMENT_DIRECTION.REVERSE);
+            //yellowPixelPlace();
+            sleep(400);
+            encoderDrive(.3, 10, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.3, 15, MOVEMENT_DIRECTION.REVERSE);
             motorKill();
 
         } else {
@@ -169,11 +186,11 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,120);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,120);
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,120);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,60);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,60);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,60);
     static final int REGION_WIDTH = 106;
-    static final int REGION_HEIGHT = 60;
+    static final int REGION_HEIGHT = 160;
 
     /*
      * Points which actually define the sample region rectangles, derived from above values
@@ -214,9 +231,11 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
     /*
      * Working variables
      */
-    Mat region1_Cb, region2_Cb, region3_Cb;
+    Mat region1_Cr, region2_Cr, region3_Cr;
     Mat YCrCb = new Mat();
     Mat Cb = new Mat();
+
+    Mat Cr = new Mat();
     int avg1, avg2, avg3;
 
     // Volatile since accessed by OpMode thread w/o synchronization
@@ -229,7 +248,7 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
     void inputToCb(Mat input)
     {
         Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
-        Core.extractChannel(YCrCb, Cb, 2);
+        Core.extractChannel(YCrCb, Cr, 1);
     }
 
     @Override
@@ -251,9 +270,9 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
          * buffer. Any changes to the child affect the parent, and the
          * reverse also holds true.
          */
-        region1_Cb = Cb.submat(new Rect(region1_pointA, region1_pointB));
-        region2_Cb = Cb.submat(new Rect(region2_pointA, region2_pointB));
-        region3_Cb = Cb.submat(new Rect(region3_pointA, region3_pointB));
+        region1_Cr = Cr.submat(new Rect(region1_pointA, region1_pointB));
+        region2_Cr = Cr.submat(new Rect(region2_pointA, region2_pointB));
+        region3_Cr = Cr.submat(new Rect(region3_pointA, region3_pointB));
     }
 
     @Override
@@ -306,9 +325,9 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
          * pixel value of the 3-channel image, and referenced the value
          * at index 2 here.
          */
-        avg1 = (int) Core.mean(region1_Cb).val[0];
-        avg2 = (int) Core.mean(region2_Cb).val[0];
-        avg3 = (int) Core.mean(region3_Cb).val[0];
+        avg1 = (int) Core.mean(region1_Cr).val[0];
+        avg2 = (int) Core.mean(region2_Cr).val[0];
+        avg3 = (int) Core.mean(region3_Cr).val[0];
 
         /*
          * Draw a rectangle showing sample region 1 on the screen.
@@ -347,14 +366,14 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
         /*
          * Find the max of the 3 averages
          */
-        int minOneTwo = Math.min(avg1, avg2);
-        int min = Math.min(minOneTwo, avg3);
+        int maxOneTwo = Math.max(avg1, avg2);
+        int max = Math.max(maxOneTwo, avg3);
 
         /*
          * Now that we found the max, we actually need to go and
          * figure out which sample region that value was from
          */
-        if(min == avg1) // Was it from region 1?
+        if(max == avg1) // Was it from region 1?
         {
             position = SkystonePosition.LEFT; // Record our analysis
 
@@ -369,7 +388,7 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(min == avg2) // Was it from region 2?
+        else if(max == avg2) // Was it from region 2?
         {
             position = SkystonePosition.CENTER; // Record our analysis
 
@@ -384,7 +403,7 @@ class SkystoneDeterminationPipelineRedClose extends OpenCvPipeline
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(min == avg3) // Was it from region 3?
+        else if(max == avg3) // Was it from region 3?
         {
             position = SkystonePosition.RIGHT; // Record our analysis
 

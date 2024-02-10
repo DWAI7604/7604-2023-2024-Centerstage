@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.LED;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -40,7 +41,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
     private DcMotor intakeMotor = null;
 
     public void runOpMode() {
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         declareHardwareProperties();
         OpenCvInternalCamera phoneCam;
         SkystoneDeterminationPipelineClose pipeline;
@@ -89,39 +90,66 @@ public class AutoBlueClose extends RobotLinearOpMode{
          * for later use. We must do this because the analysis will continue
          * to change as the camera view changes once the robot starts moving!
          */
-        sleep(2000);
+        sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.CENTER) {
-            encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
-
+            encoderDrive(.4, 39, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.2, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.5, 30, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 11, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.4, 140, TURN_DIRECTION.TURN_RIGHT);
+            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.1, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+
+
+            //yellowPixelPlace();
+            sleep(400);
+            encoderDrive(.4, 4, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 8, MOVEMENT_DIRECTION.REVERSE);
 
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.LEFT) {
-            encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 25, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 9, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 12, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderTurn(.3, 135, TURN_DIRECTION.TURN_RIGHT);
+
+            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+            //yellowPixelPlace();
+            sleep(400);
+            encoderDrive(.3, 6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 8, MOVEMENT_DIRECTION.REVERSE);
 
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.RIGHT) {
             encoderDrive(.4, 26, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.3, 4, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 5, MOVEMENT_DIRECTION.FORWARD);
 
 
             purplePixelPlace();
             sleep(400);
+            encoderDrive(.4, 4, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.4, 25, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderTurn(.4, 135, TURN_DIRECTION.TURN_RIGHT);
+            encoderDrive(.3,3, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.1, 3, MOVEMENT_DIRECTION.REVERSE);
+            sleep(400);
+            encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 18, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.REVERSE);
+
 
             motorKill();
 
@@ -158,11 +186,11 @@ class SkystoneDeterminationPipelineClose extends OpenCvPipeline
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,120);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,120);
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,120);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,60);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,60);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,60);
     static final int REGION_WIDTH = 106;
-    static final int REGION_HEIGHT = 60;
+    static final int REGION_HEIGHT = 160;
 
     /*
      * Points which actually define the sample region rectangles, derived from above values

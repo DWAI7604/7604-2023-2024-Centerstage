@@ -40,7 +40,7 @@ public class AutoRedFar extends RobotLinearOpMode{
     private DcMotor intakeMotor = null;
 
     public void runOpMode() {
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         declareHardwareProperties();
         OpenCvInternalCamera phoneCam;
         SkystoneDeterminationPipelineRedFar pipeline;
@@ -89,45 +89,80 @@ public class AutoRedFar extends RobotLinearOpMode{
          * for later use. We must do this because the analysis will continue
          * to change as the camera view changes once the robot starts moving!
          */
-        sleep(2000);
+        sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.CENTER) {
-            encoderDrive(.4, 31, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 38, MOVEMENT_DIRECTION.FORWARD);
 
             purplePixelPlace();
             sleep(400);
 
-            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.2, 15, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 7, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 30, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 9, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 3, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            sleep(9000);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.3, 140, TURN_DIRECTION.TURN_LEFT);
+            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+
+            encoderDrive(.4, 5, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 13, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.REVERSE);
+
+
 
 
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.LEFT) {
 
-            encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 4, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 31, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.3, 4, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 25, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 50, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 18, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 23, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            sleep(7000);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.3, 140, TURN_DIRECTION.TURN_LEFT);
+            encoderDrive(.4, 1.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+
+            encoderDrive(.4, 5, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 9, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.REVERSE);
 
 
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.RIGHT) {
 
             encoderDrive(.4, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.3, 4, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 5, MOVEMENT_DIRECTION.FORWARD);
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.2, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.4, 26, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 50, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 5, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 22, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.2, 2, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 23, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            sleep(4000);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.3, 140, TURN_DIRECTION.TURN_LEFT);
+            encoderDrive(.4, 3, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+
+            encoderDrive(.4, 5, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 17, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 10, MOVEMENT_DIRECTION.REVERSE);
 
             motorKill();
 
@@ -166,11 +201,11 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
     /*
      * The core values which define the location and size of the sample regions
      */
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,120);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,120);
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,120);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,60);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,60);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,60);
     static final int REGION_WIDTH = 106;
-    static final int REGION_HEIGHT = 60;
+    static final int REGION_HEIGHT = 160;
 
     /*
      * Points which actually define the sample region rectangles, derived from above values
@@ -214,6 +249,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
     Mat region1_Cb, region2_Cb, region3_Cb;
     Mat YCrCb = new Mat();
     Mat Cb = new Mat();
+    Mat Cr = new Mat();
     int avg1, avg2, avg3;
 
     // Volatile since accessed by OpMode thread w/o synchronization
@@ -226,7 +262,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
     void inputToCb(Mat input)
     {
         Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
-        Core.extractChannel(YCrCb, Cb, 2);
+        Core.extractChannel(YCrCb, Cr, 1);
     }
 
     @Override
@@ -248,9 +284,9 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
          * buffer. Any changes to the child affect the parent, and the
          * reverse also holds true.
          */
-        region1_Cb = Cb.submat(new Rect(region1_pointA, region1_pointB));
-        region2_Cb = Cb.submat(new Rect(region2_pointA, region2_pointB));
-        region3_Cb = Cb.submat(new Rect(region3_pointA, region3_pointB));
+        region1_Cb = Cr.submat(new Rect(region1_pointA, region1_pointB));
+        region2_Cb = Cr.submat(new Rect(region2_pointA, region2_pointB));
+        region3_Cb = Cr.submat(new Rect(region3_pointA, region3_pointB));
     }
 
     @Override
@@ -344,8 +380,8 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
         /*
          * Find the max of the 3 averages
          */
-        int minOneTwo = Math.min(avg1, avg2);
-        int min = Math.min(minOneTwo, avg3);
+        int minOneTwo = Math.max(avg1, avg2);
+        int min = Math.max(minOneTwo, avg3);
 
         /*
          * Now that we found the max, we actually need to go and

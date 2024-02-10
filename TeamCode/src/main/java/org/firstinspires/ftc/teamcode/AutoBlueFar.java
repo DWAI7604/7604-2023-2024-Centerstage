@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -40,7 +41,7 @@ public class AutoBlueFar extends RobotLinearOpMode{
     private DcMotor intakeMotor = null;
 
     public void runOpMode() {
-        intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         declareHardwareProperties();
         OpenCvInternalCamera phoneCam;
         SkystoneDeterminationPipelineBlueFar pipeline;
@@ -94,7 +95,8 @@ public class AutoBlueFar extends RobotLinearOpMode{
        sleep(2000);
 
           if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.CENTER) {
-              encoderDrive(.4, 32.5, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.4, 39, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
 
@@ -109,38 +111,66 @@ public class AutoBlueFar extends RobotLinearOpMode{
               }*/
               purplePixelPlace();
               sleep(400);
-              encoderDrive(.4, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              encoderDrive(.2, 15, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.5, 60, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.2, 10, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.2, 12, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.5, 40, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              sleep(7000);
+
+              encoderDrive(.4, 10, MOVEMENT_DIRECTION.REVERSE);
+              encoderTurn(.4, 135, TURN_DIRECTION.TURN_RIGHT);
+              encoderDrive(.3, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+              sleep(400);
+              encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.4, 8, MOVEMENT_DIRECTION.REVERSE);
 
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.LEFT) {
 
               encoderDrive(.5, 25, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.3, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.4, 5, MOVEMENT_DIRECTION.FORWARD);
 
 
               purplePixelPlace();
               sleep(400);
-              encoderDrive(.2, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.4, 5, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.2, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.6, 50, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.1, 5, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.6, 45, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              sleep(1500);
+
+              encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
+              encoderTurn(.4,135, TURN_DIRECTION.TURN_RIGHT);
+              encoderDrive(.2, 3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.4, 16, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.4, 8, MOVEMENT_DIRECTION.REVERSE);
 
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.RIGHT) {
 
-              encoderDrive(.5, 25, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.3, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.5, 30, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.3, 3.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
 
               purplePixelPlace();
               sleep(400);
-              encoderDrive(.3, 7, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.3, 4.5, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.4, 20, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.6, 50, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.1, 10, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.6, 40, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              sleep(1500);
+
+              encoderDrive(.4, 20, MOVEMENT_DIRECTION.REVERSE);
+              encoderTurn(.4, 135, TURN_DIRECTION.TURN_RIGHT);
+              encoderDrive(.3, 1, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
+              sleep(400);
+              encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.4, 11, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.4, 8, MOVEMENT_DIRECTION.REVERSE);
 
               motorKill();
 
@@ -179,11 +209,11 @@ class SkystoneDeterminationPipelineBlueFar extends OpenCvPipeline
         /*
          * The core values which define the location and size of the sample regions
          */
-        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,120);
-        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,120);
-        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,120);
+        static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,60);
+        static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(107,60);
+        static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(213,60);
         static final int REGION_WIDTH = 106;
-        static final int REGION_HEIGHT = 60;
+        static final int REGION_HEIGHT = 160;
 
         /*
          * Points which actually define the sample region rectangles, derived from above values

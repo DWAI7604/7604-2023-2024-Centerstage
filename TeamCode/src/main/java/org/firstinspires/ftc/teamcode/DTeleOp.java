@@ -46,9 +46,9 @@ public class DTeleOp extends RobotLinearOpMode {
 
 
             exponentialDrive();
-            intakeControl();
+            //intakeControl();
             //planeLauncher();
-            //hangerControl();
+            hangerControl();
 
 
 
