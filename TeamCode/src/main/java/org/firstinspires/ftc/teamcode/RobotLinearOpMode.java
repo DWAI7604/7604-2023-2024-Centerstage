@@ -728,7 +728,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
         yellowPlacer.setPosition(355);
-        sleep(400);
+        sleep(700);
         yellowPlacer.setPosition(0);
         sleep(400);
 

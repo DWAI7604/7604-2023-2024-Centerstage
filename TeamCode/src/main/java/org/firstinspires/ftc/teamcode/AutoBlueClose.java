@@ -61,7 +61,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
             @Override
             public void onOpened()
             {
-                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_RIGHT);
+                phoneCam.startStreaming(320,240, OpenCvCameraRotation.SIDEWAYS_LEFT);
             }
 
             @Override
@@ -92,64 +92,62 @@ public class AutoBlueClose extends RobotLinearOpMode{
          */
         sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.CENTER) {
-            encoderDrive(.4, 39, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.2, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 39, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.4, 11, MOVEMENT_DIRECTION.REVERSE);
-            encoderTurn(.4, 140, TURN_DIRECTION.TURN_RIGHT);
-            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.1, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.7, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 11, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.7, 130, TURN_DIRECTION.TURN_RIGHT);
+            distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
 
             yellowPixelPlace();
             sleep(400);
-            encoderDrive(.4, 4, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.2, 8, MOVEMENT_DIRECTION.REVERSE);
-
-            motorKill();
-        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.LEFT) {
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 8.5, MOVEMENT_DIRECTION.STRAFE_LEFT);
-
-
-            purplePixelPlace();
-            sleep(400);
-            encoderDrive(.4, 8.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.4, 12, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderTurn(.3, 135, TURN_DIRECTION.TURN_RIGHT);
-
-            distSensorDrive(.4, 3, MOVEMENT_DIRECTION.REVERSE);
-            yellowPixelPlace();
-            sleep(400);
-            encoderDrive(.3, 6, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.7, 4, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 14, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderDrive(.4, 8, MOVEMENT_DIRECTION.REVERSE);
 
             motorKill();
+        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.LEFT) {
+            encoderDrive(.7, 7.7, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 30, MOVEMENT_DIRECTION.FORWARD);
+
+
+
+            purplePixelPlace();
+            sleep(600);
+            encoderDrive(.7, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderTurn(.5, 135, TURN_DIRECTION.TURN_RIGHT);
+
+            distSensorDrive(.5, 3, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.5, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            yellowPixelPlace();
+            sleep(400);
+            encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.7, 8, MOVEMENT_DIRECTION.REVERSE);
+
+            motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.RIGHT) {
-            encoderDrive(.4, 26, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.3, 4, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.4, 5, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 24, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.5, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.5, 7, MOVEMENT_DIRECTION.FORWARD);
 
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.4, 4, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.3, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderTurn(.4, 135, TURN_DIRECTION.TURN_RIGHT);
-            encoderDrive(.3,3, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.1, 3, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.7, 4, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.5, 18, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
+            distSensorDrive(.7,3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();
             sleep(400);
-            encoderDrive(.4, 6, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.4, 18, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.4, 10, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 18, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
 
 
             motorKill();
