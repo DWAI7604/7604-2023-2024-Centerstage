@@ -96,22 +96,29 @@ public class DTeleOp extends RobotLinearOpMode {
         double rightBackMotorPower;
 
 
-        double axial = -Math.atan(gamepad1.right_stick_y); //forward and back power
-        double lateral = Math.atan(gamepad1.right_stick_x); //left and right power
-        double yaw = gamepad1.left_stick_x; //turning
+        double axial = -Math.atan(gamepad1.left_stick_y); //forward and back power
+        double lateral = Math.atan(gamepad1.left_stick_x); //left and right power
+        double yaw = gamepad1.right_stick_x; //turning
 
 
 
 
-        leftFrontMotorPower = axial - lateral + (.5*yaw);
-        rightFrontMotorPower = axial - lateral - (.5*yaw);
-        leftBackMotorPower = axial + lateral + (.5*yaw);
-        rightBackMotorPower = axial + lateral - (.5*yaw);
+        leftFrontMotorPower = axial - lateral + (.8*yaw);
+        rightFrontMotorPower = axial - lateral - (.8*yaw);
+        leftBackMotorPower = axial + lateral + (.8*yaw);
+        rightBackMotorPower = axial + lateral - (.8*yaw);
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);
         leftBackDriveMotor.setPower(leftBackMotorPower);
         rightBackDriveMotor.setPower(rightBackMotorPower);
+
+        if (gamepad1.a) {
+            leftFrontDriveMotor.setPower(2*leftFrontMotorPower);
+            rightFrontDriveMotor.setPower(2*rightFrontMotorPower);
+            leftBackDriveMotor.setPower(2*leftBackMotorPower);
+            rightBackDriveMotor.setPower(2*rightBackMotorPower);
+        }
 
     }
 
