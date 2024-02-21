@@ -92,7 +92,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
          */
         sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineClose.SkystonePosition.CENTER) {
-            encoderDrive(.7, 39, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 37.6, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
             purplePixelPlace();

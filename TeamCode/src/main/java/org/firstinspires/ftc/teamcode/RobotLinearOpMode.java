@@ -95,7 +95,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     DcMotor leftFrontDriveMotor;
     DcMotor rightBackDriveMotor;
     DcMotor leftBackDriveMotor;
-
+    NormalizedColorSensor colorSensor;
     AprilTagProcessor aprilTag;
     VisionPortal visionPortal;
     boolean USE_WEBCAM = false;  // true for webcam, false for phone camera
@@ -523,16 +523,104 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
 
-    public void colorSensorDrive(double power, MOVEMENT_DIRECTION movement_direction) {
-        if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
+    public void colorSensorDrive(double power, MOVEMENT_DIRECTION movement_direction, TAPE_COLOR tape_color) {
+        if (tape_color == TAPE_COLOR.RED_TAPE) {
+            if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
+                while (opModeIsActive() && colorSensor() != 2) {
+                    leftFrontDriveMotor.setPower(power);
+                    leftBackDriveMotor.setPower(power);
+                    rightFrontDriveMotor.setPower(power);
+                    rightBackDriveMotor.setPower(power);
 
-             while (colorSensor() == 0) {
-                 leftFrontDriveMotor.setPower(power);
-                 rightFrontDriveMotor.setPower(power);
-                 leftBackDriveMotor.setPower(power);
-                 rightBackDriveMotor.setPower(power);
-             }
-             motorKill();
+                    if (colorSensor() == 2) {
+                        motorKill();
+                        encoderDrive(power, .5, MOVEMENT_DIRECTION.REVERSE);
+                    }
+
+                }
+            } else if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
+                while (opModeIsActive() && colorSensor() != 2) {
+                    leftFrontDriveMotor.setPower(-power);
+                    leftBackDriveMotor.setPower(-power);
+                    rightFrontDriveMotor.setPower(-power);
+                    rightBackDriveMotor.setPower(-power);
+
+                    if (colorSensor() == 2) {
+                        motorKill();
+                        encoderDrive(power, .5, MOVEMENT_DIRECTION.FORWARD);
+                    }
+                }
+            } else if (movement_direction == MOVEMENT_DIRECTION.STRAFE_LEFT) {
+                while (opModeIsActive() && colorSensor() != 2) {
+                    leftFrontDriveMotor.setPower(power);
+                    leftBackDriveMotor.setPower(-power);
+                    rightFrontDriveMotor.setPower(power);
+                    rightBackDriveMotor.setPower(-power);
+
+                    if (colorSensor() == 2) {
+                        motorKill();
+                    }
+                }
+            } else if (movement_direction == MOVEMENT_DIRECTION.STRAFE_RIGHT) {
+                while (opModeIsActive() && colorSensor() != 2) {
+                    leftFrontDriveMotor.setPower(-power);
+                    leftBackDriveMotor.setPower(power);
+                    rightFrontDriveMotor.setPower(-power);
+                    rightBackDriveMotor.setPower(power);
+
+                    if (colorSensor() == 2) {
+                        motorKill();
+                    }
+                }
+            }
+        } else if (tape_color == TAPE_COLOR.BLUE_TAPE) {
+            if (movement_direction == MOVEMENT_DIRECTION.FORWARD) {
+                while (opModeIsActive() && colorSensor() != 1) {
+                    leftFrontDriveMotor.setPower(power);
+                    leftBackDriveMotor.setPower(power);
+                    rightFrontDriveMotor.setPower(power);
+                    rightBackDriveMotor.setPower(power);
+
+                    if (colorSensor() == 1) {
+                        motorKill();
+                        encoderDrive(power, .5, MOVEMENT_DIRECTION.REVERSE);
+                    }
+                }
+            } else if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
+                while (opModeIsActive() && colorSensor() != 1) {
+                    leftFrontDriveMotor.setPower(-power);
+                    leftBackDriveMotor.setPower(-power);
+                    rightFrontDriveMotor.setPower(-power);
+                    rightBackDriveMotor.setPower(-power);
+
+                    if (colorSensor() == 1) {
+                        motorKill();
+                        encoderDrive(power, .5, MOVEMENT_DIRECTION.FORWARD);
+                    }
+                }
+            } else if (movement_direction == MOVEMENT_DIRECTION.STRAFE_LEFT) {
+                while (opModeIsActive() && colorSensor() != 1) {
+                    leftFrontDriveMotor.setPower(power);
+                    leftBackDriveMotor.setPower(-power);
+                    rightFrontDriveMotor.setPower(power);
+                    rightBackDriveMotor.setPower(-power);
+
+                    if (colorSensor() == 1) {
+                        motorKill();
+                    }
+                }
+            } else if (movement_direction == MOVEMENT_DIRECTION.STRAFE_RIGHT) {
+                while (opModeIsActive() && colorSensor() !=1) {
+                    leftFrontDriveMotor.setPower(-power);
+                    leftBackDriveMotor.setPower(power);
+                    rightFrontDriveMotor.setPower(-power);
+                    rightBackDriveMotor.setPower(power);
+
+                    if (colorSensor() == 1) {
+                        motorKill();
+                    }
+                }
+            }
         }
     }
 
@@ -565,7 +653,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
         }
         // you can use this as a regular DistanceSensor.
-        return sensorDistance.getDistance(DistanceUnit.INCH);
+        return sensorDistance.getDistance(DistanceUnit.CM);
 
 
 
@@ -573,18 +661,31 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         // methods associated with the Rev2mDistanceSensor class.
 
     }
-    public void distSensorDrive(double inputPower, double distanceFromObjectIN, MOVEMENT_DIRECTION movement_direction) {
+    public void distSensorDrive(double inputPower, double distanceFromObjectCM, MOVEMENT_DIRECTION movement_direction) {
+
+        double power;
+
         if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
-//            do {
 
-                distanceSensor(SENSOR_DIRECTION.REAR);
-//            double power = Math.log(distanceSensor(SENSOR_DIRECTION.REAR) - distanceFromObjectCM);
-//            if (power > inputPower) {
-//                power = inputPower;
-//            }
+            while (opModeIsActive() && distanceSensor(SENSOR_DIRECTION.REAR) > distanceFromObjectCM) {
+                double distanceToSpeed = (Math.atan(distanceSensor(SENSOR_DIRECTION.REAR) - distanceFromObjectCM))/4;
+                if (distanceToSpeed > inputPower) {
+                    power = inputPower;
+                } else {
+                    power = distanceToSpeed;
+                }
+                leftFrontDriveMotor.setPower(-power);
+                rightFrontDriveMotor.setPower(-power);
+                leftBackDriveMotor.setPower(-power);
+                rightBackDriveMotor.setPower(-power);
 
-            encoderDrive(inputPower, (distanceSensor(SENSOR_DIRECTION.REAR) - 5), MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.1, 4, MOVEMENT_DIRECTION.REVERSE);
+                if (distanceSensor(SENSOR_DIRECTION.REAR) <= distanceFromObjectCM) {
+                    motorKill();
+                }
+                telemetry.addData("Power", power);
+                telemetry.update();
+            }
+
 
 
 //                    leftFrontDriveMotor.setPower(-power);
@@ -613,10 +714,11 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
             }
 
     }
+
     public float colorSensor() {
         int colorValue = 0;
 
-        NormalizedColorSensor colorSensor;
+
 
         View relativeLayout;
 
@@ -639,14 +741,14 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         // hue, the second element (1) will contain the saturation, and the third element (2) will
         // contain the value. See http://web.archive.org/web/20190311170843/https://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html
         // for an explanation of HSV color.
-        final float[] hsvValues = new float[3];
+        //final float[] hsvValues = new float[3];
 
 
 
         // Get a reference to our sensor object. It's recommended to use NormalizedColorSensor over
         // ColorSensor, because NormalizedColorSensor consistently gives values between 0 and 1, while
         // the values you get from ColorSensor are dependent on the specific sensor you're using.
-        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+
 
         // If possible, turn the light on in the beginning (it might already be on anyway,
         // we just make sure it is if we can).
@@ -663,7 +765,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
             // Show the gain value via telemetry
-            telemetry.addData("Gain", gain);
+            //telemetry.addData("Gain", gain);
 
             // Tell the sensor our desired gain value (normally you would do this during initialization,
             // not during the loop)
@@ -679,32 +781,33 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
              * for an explanation of HSV color. */
 
             // Update the hsvValues array by passing it to Color.colorToHSV()
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            telemetry.addLine()
-                    .addData("Red", "%.3f", colors.red)
-                    .addData("Green", "%.3f", colors.green)
-                    .addData("Blue", "%.3f", colors.blue);
-            telemetry.addLine()
-                    .addData("Hue", "%.3f", hsvValues[0])
-                    .addData("Saturation", "%.3f", hsvValues[1])
-                    .addData("Value", "%.3f", hsvValues[2]);
-            telemetry.addData("Alpha", "%.3f", colors.alpha);
+//            Color.colorToHSV(colors.toColor(), hsvValues);
+//            telemetry.addLine()
+//                    .addData("Red", "%.3f", colors.red)
+//                    .addData("Green", "%.3f", colors.green)
+//                    .addData("Blue", "%.3f", colors.blue);
+//            telemetry.addLine()
+//                    .addData("Hue", "%.3f", hsvValues[0])
+//                    .addData("Saturation", "%.3f", hsvValues[1])
+//                    .addData("Value", "%.3f", hsvValues[2]);
+//            telemetry.addData("Alpha", "%.3f", colors.alpha);
 
             /* If this color sensor also has a distance sensor, display the measured distance.
              * Note that the reported distance is only useful at very close range, and is impacted by
              * ambient light and surface reflectivity. */
-            if (colorSensor instanceof DistanceSensor) {
-                telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
-            }
+//            if (colorSensor instanceof DistanceSensor) {
+//                telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
+//            }
 
-            if (colors.blue > .400) {
+            if (colors.blue >= .080) {
                 colorValue = 1;
-            } else if (colors.red > .400) {
+            } else if (colors.red > .070) {
                 colorValue = 2;
             }
 
         return(colorValue);
     }
+
     public void purplePixelPlace() {
 
         Servo purplePlacer = null;
@@ -1388,6 +1491,8 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
     }
 
     enum MOVEMENT_DIRECTION {
@@ -1414,6 +1519,11 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         LEFT,
         RIGHT
 
+    }
+
+    enum TAPE_COLOR {
+        RED_TAPE,
+        BLUE_TAPE
     }
 
 

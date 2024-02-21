@@ -101,8 +101,8 @@ public class AutoRedFar extends RobotLinearOpMode{
             encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             sleep(12000);
             encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.7, 17, MOVEMENT_DIRECTION.REVERSE);
-            encoderTurn(.5, 140, TURN_DIRECTION.TURN_LEFT);
+            encoderDrive(.7, 15.5, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.5, 130, TURN_DIRECTION.TURN_LEFT);
             distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();
             sleep(400);
@@ -157,7 +157,7 @@ public class AutoRedFar extends RobotLinearOpMode{
             encoderDrive(.4, 38, MOVEMENT_DIRECTION.REVERSE);
             sleep(10000);
             encoderDrive(.7, 40, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.7, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 11, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
             distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();

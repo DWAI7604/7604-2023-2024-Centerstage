@@ -94,6 +94,9 @@ public class DTeleOp extends RobotLinearOpMode {
         double rightFrontMotorPower;
         double leftBackMotorPower;
         double rightBackMotorPower;
+        double slow = 0;
+        double standard = 0;
+
 
 
         double axial = -Math.atan(gamepad1.left_stick_y); //forward and back power
@@ -102,23 +105,50 @@ public class DTeleOp extends RobotLinearOpMode {
 
 
 
+        if (gamepad1.dpad_down) {
+            slow = 1;
+            standard = -1;
+        }
+        if (gamepad1.dpad_up) {
+            standard = 1;
+            slow = 0;
+        }
 
-        leftFrontMotorPower = axial - lateral + (.8*yaw);
-        rightFrontMotorPower = axial - lateral - (.8*yaw);
-        leftBackMotorPower = axial + lateral + (.8*yaw);
-        rightBackMotorPower = axial + lateral - (.8*yaw);
+        if (slow == 1) {
+            leftFrontMotorPower = .5 * (axial - lateral + (.8*yaw));
+            rightFrontMotorPower = .5 * (axial - lateral - (.8*yaw));
+            leftBackMotorPower = .5 * (axial + lateral + (.8*yaw));
+            rightBackMotorPower = .5 * (axial + lateral - (.8*yaw));
+        } else if (slow == 0) {
+            leftFrontMotorPower = axial - lateral + (.8*yaw);
+            rightFrontMotorPower = axial - lateral - (.8*yaw);
+            leftBackMotorPower = axial + lateral + (.8*yaw);
+            rightBackMotorPower = axial + lateral - (.8*yaw);
+        }
+
+        if (standard == 1) {
+            leftFrontMotorPower = axial - lateral + (.8*yaw);
+            rightFrontMotorPower = axial - lateral - (.8*yaw);
+            leftBackMotorPower = axial + lateral + (.8*yaw);
+            rightBackMotorPower = axial + lateral - (.8*yaw);
+        } else if (standard == -1) {
+            leftFrontMotorPower = .5 * (axial - lateral + (.8*yaw));
+            rightFrontMotorPower = .5 * (axial - lateral - (.8*yaw));
+            leftBackMotorPower = .5 * (axial + lateral + (.8*yaw));
+            rightBackMotorPower = .5 * (axial + lateral - (.8*yaw));
+        } else {
+            leftFrontMotorPower = axial - lateral + (.8*yaw);
+            rightFrontMotorPower = axial - lateral - (.8*yaw);
+            leftBackMotorPower = axial + lateral + (.8*yaw);
+            rightBackMotorPower = axial + lateral - (.8*yaw);
+        }
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);
         leftBackDriveMotor.setPower(leftBackMotorPower);
         rightBackDriveMotor.setPower(rightBackMotorPower);
 
-        if (gamepad1.a) {
-            leftFrontDriveMotor.setPower(2*leftFrontMotorPower);
-            rightFrontDriveMotor.setPower(2*rightFrontMotorPower);
-            leftBackDriveMotor.setPower(2*leftBackMotorPower);
-            rightBackDriveMotor.setPower(2*rightBackMotorPower);
-        }
+
 
     }
 
@@ -162,13 +192,23 @@ public class DTeleOp extends RobotLinearOpMode {
     }
 
     public void intakeControl(){
-        double intakePower = -gamepad1.right_trigger;
 
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
 
 
-        intakeMotor.setPower(-gamepad1.right_trigger);
-        intakeMotor.setPower(gamepad1.left_trigger);
+        while (gamepad1.right_bumper) {
+            intakeMotor.setPower(-1);
+            exponentialDrive();
+        }
+        while (gamepad1.left_bumper) {
+            intakeMotor.setPower(1);
+            exponentialDrive();
+        }
+
+        if (gamepad1.left_bumper != true && gamepad1.right_bumper != true) {
+            intakeMotor.setPower(0);
+            exponentialDrive();
+        }
 
     }
     public void hPower(){
@@ -192,26 +232,29 @@ public class DTeleOp extends RobotLinearOpMode {
 
             planeLauncher = hardwareMap.get(Servo.class, "planeLauncher");
 
+
             
 
 
 
-            if (gamepad2.x) {
-                planeLauncher.setPosition(0);
+            if (gamepad1.x) {
+                planeLauncher.setPosition(0.15);
 
 
             }
         }
 
         public void hangerControl() {
-        DcMotor leftHanger = null;
-        DcMotor rightHanger = null;
+        DcMotor Hanger = null;
 
-        leftHanger = hardwareMap.get(DcMotor.class, "leftHanger");
-        rightHanger = hardwareMap.get(DcMotor.class, "rightHanger");
 
-        rightHanger.setPower(-.5 * gamepad2.left_stick_y);
-        leftHanger.setPower(.5 * gamepad2.right_stick_y);
+        Hanger = hardwareMap.get(DcMotor.class, "Hanger");
+
+        Hanger.setPower(gamepad1.right_trigger);
+        Hanger.setPower(-gamepad1.left_trigger);
+
+
+
 
         }
     public void declareHardwareProperties() {

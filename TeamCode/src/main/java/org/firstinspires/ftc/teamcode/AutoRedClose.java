@@ -88,7 +88,7 @@ public class AutoRedClose extends RobotLinearOpMode{
          */
         sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.CENTER) {
-            encoderDrive(.7, 39, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 37.6, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
             purplePixelPlace();
@@ -97,20 +97,21 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderDrive(.7, 11, MOVEMENT_DIRECTION.REVERSE);
             encoderTurn(.7, 140, TURN_DIRECTION.TURN_LEFT);
             distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.5, 1.5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+
 
 
             yellowPixelPlace();
             sleep(400);
             encoderDrive(.7, 4, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.7, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.4, 12, MOVEMENT_DIRECTION.REVERSE);
 
 
             motorKill();
         } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedClose.SkystonePosition.LEFT) {
             encoderDrive(.7, 24, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 8, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.5, 7.8, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.5, 5, MOVEMENT_DIRECTION.FORWARD);
 
 
@@ -119,7 +120,7 @@ public class AutoRedClose extends RobotLinearOpMode{
             encoderDrive(.5, 3, MOVEMENT_DIRECTION.REVERSE);
             encoderDrive(.7, 20, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderTurn(.7, 140, TURN_DIRECTION.TURN_LEFT);
-            encoderDrive(.5, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.5, 6.3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();
             sleep(400);
@@ -140,16 +141,16 @@ public class AutoRedClose extends RobotLinearOpMode{
 
 
             purplePixelPlace();
-            sleep(400);
+            sleep(500);
 
             encoderDrive(.7, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
             encoderTurn(.7, 135, TURN_DIRECTION.TURN_LEFT);
-            encoderDrive(.5, 9.7, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.5, 6, MOVEMENT_DIRECTION.STRAFE_LEFT);
             distSensorDrive(.7,3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();
             sleep(400);
             encoderDrive(.7, 10, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.7, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
             motorKill();
 

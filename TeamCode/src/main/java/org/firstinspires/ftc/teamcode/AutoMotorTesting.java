@@ -51,9 +51,8 @@ public class AutoMotorTesting extends RobotLinearOpMode{
         waitForStart();
         declareHardwareProperties();
 
-       distanceSensor(SENSOR_DIRECTION.REAR);
-       distSensorDrive(3, 2, MOVEMENT_DIRECTION.REVERSE);
-        telemetry.addData("Distance", distanceSensor(SENSOR_DIRECTION.REAR));
+
+        distSensorDrive(.5, 5, MOVEMENT_DIRECTION.REVERSE);
         telemetry.update();
 
     }

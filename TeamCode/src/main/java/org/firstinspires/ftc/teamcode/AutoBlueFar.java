@@ -96,7 +96,7 @@ public class AutoBlueFar extends RobotLinearOpMode{
        sleep(2000);
 
           if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.CENTER) {
-              encoderDrive(.4, 40, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.4, 39.6, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
 
@@ -112,10 +112,11 @@ public class AutoBlueFar extends RobotLinearOpMode{
               }*/
               purplePixelPlace();
               sleep(400);
+              sleep(9000);
               encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
               encoderDrive(.2, 9, MOVEMENT_DIRECTION.FORWARD);
               encoderDrive(.5, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              sleep(9000);
+
               encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
               encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
               encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
