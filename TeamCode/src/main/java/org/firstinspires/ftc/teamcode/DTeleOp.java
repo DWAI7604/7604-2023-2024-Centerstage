@@ -105,43 +105,33 @@ public class DTeleOp extends RobotLinearOpMode {
 
 
 
-        if (gamepad1.dpad_down) {
-            slow = 1;
-            standard = -1;
-        }
-        if (gamepad1.dpad_up) {
-            standard = 1;
-            slow = 0;
-        }
 
-        if (slow == 1) {
-            leftFrontMotorPower = .5 * (axial - lateral + (.8*yaw));
-            rightFrontMotorPower = .5 * (axial - lateral - (.8*yaw));
-            leftBackMotorPower = .5 * (axial + lateral + (.8*yaw));
-            rightBackMotorPower = .5 * (axial + lateral - (.8*yaw));
-        } else if (slow == 0) {
-            leftFrontMotorPower = axial - lateral + (.8*yaw);
-            rightFrontMotorPower = axial - lateral - (.8*yaw);
-            leftBackMotorPower = axial + lateral + (.8*yaw);
-            rightBackMotorPower = axial + lateral - (.8*yaw);
-        }
 
-        if (standard == 1) {
-            leftFrontMotorPower = axial - lateral + (.8*yaw);
-            rightFrontMotorPower = axial - lateral - (.8*yaw);
-            leftBackMotorPower = axial + lateral + (.8*yaw);
-            rightBackMotorPower = axial + lateral - (.8*yaw);
-        } else if (standard == -1) {
-            leftFrontMotorPower = .5 * (axial - lateral + (.8*yaw));
-            rightFrontMotorPower = .5 * (axial - lateral - (.8*yaw));
-            leftBackMotorPower = .5 * (axial + lateral + (.8*yaw));
-            rightBackMotorPower = .5 * (axial + lateral - (.8*yaw));
-        } else {
-            leftFrontMotorPower = axial - lateral + (.8*yaw);
-            rightFrontMotorPower = axial - lateral - (.8*yaw);
-            leftBackMotorPower = axial + lateral + (.8*yaw);
-            rightBackMotorPower = axial + lateral - (.8*yaw);
-        }
+
+
+        leftFrontMotorPower = axial - lateral + (.8*yaw);
+        rightFrontMotorPower = axial - lateral - (.8*yaw);
+        leftBackMotorPower = axial + lateral + (.8*yaw);
+        rightBackMotorPower = axial + lateral - (.8*yaw);
+
+            if (gamepad1.dpad_up) {
+                leftFrontMotorPower = axial - lateral + (.8*yaw);
+                rightFrontMotorPower = axial - lateral - (.8*yaw);
+                leftBackMotorPower = axial + lateral + (.8*yaw);
+                rightBackMotorPower = axial + lateral - (.8*yaw);
+            } else if (gamepad1.dpad_down) {
+                leftFrontMotorPower = .4 * (axial - lateral + (.8*yaw));
+                rightFrontMotorPower = .4 * (axial - lateral - (.8*yaw));
+                leftBackMotorPower = .4 * (axial + lateral + (.8*yaw));
+                rightBackMotorPower = .4 * (axial + lateral - (.8*yaw));
+            } else if (gamepad1.dpad_left && gamepad1.dpad_right) {
+                leftFrontMotorPower = 4 * (axial - lateral + (.8*yaw));
+                rightFrontMotorPower = 4 * (axial - lateral - (.8*yaw));
+                leftBackMotorPower = 4 * (axial + lateral + (.8*yaw));
+                rightBackMotorPower = 4 * (axial + lateral - (.8*yaw));
+            }
+
+
 
         leftFrontDriveMotor.setPower(leftFrontMotorPower);
         rightFrontDriveMotor.setPower(rightFrontMotorPower);

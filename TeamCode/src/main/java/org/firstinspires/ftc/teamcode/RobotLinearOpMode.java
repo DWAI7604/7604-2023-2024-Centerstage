@@ -653,7 +653,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
         }
         // you can use this as a regular DistanceSensor.
-        return sensorDistance.getDistance(DistanceUnit.CM);
+        return sensorDistance.getDistance(DistanceUnit.INCH);
 
 
 
@@ -664,27 +664,30 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
     public void distSensorDrive(double inputPower, double distanceFromObjectCM, MOVEMENT_DIRECTION movement_direction) {
 
         double power;
+        double dist = distanceSensor(SENSOR_DIRECTION.REAR);
 
-        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
-
-            while (opModeIsActive() && distanceSensor(SENSOR_DIRECTION.REAR) > distanceFromObjectCM) {
-                double distanceToSpeed = (Math.atan(distanceSensor(SENSOR_DIRECTION.REAR) - distanceFromObjectCM))/4;
-                if (distanceToSpeed > inputPower) {
-                    power = inputPower;
-                } else {
-                    power = distanceToSpeed;
-                }
-                leftFrontDriveMotor.setPower(-power);
-                rightFrontDriveMotor.setPower(-power);
-                leftBackDriveMotor.setPower(-power);
-                rightBackDriveMotor.setPower(-power);
-
-                if (distanceSensor(SENSOR_DIRECTION.REAR) <= distanceFromObjectCM) {
-                    motorKill();
-                }
-                telemetry.addData("Power", power);
-                telemetry.update();
-            }
+//        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
+//
+//            while (opModeIsActive() && distanceSensor(SENSOR_DIRECTION.REAR) > distanceFromObjectCM) {
+//                double distanceToSpeed = (Math.atan(distanceSensor(SENSOR_DIRECTION.REAR) - distanceFromObjectCM))/4;
+//                if (distanceToSpeed > inputPower) {
+//                    power = inputPower;
+//                } else {
+//                    power = distanceToSpeed;
+//                }
+//                leftFrontDriveMotor.setPower(-power);
+//                rightFrontDriveMotor.setPower(-power);
+//                leftBackDriveMotor.setPower(-power);
+//                rightBackDriveMotor.setPower(-power);
+//
+//                if (distanceSensor(SENSOR_DIRECTION.REAR) <= distanceFromObjectCM) {
+//                    motorKill();
+//                }
+//                telemetry.addData("Power", power);
+//                telemetry.update();
+//            }
+        encoderDrive(inputPower, dist - distanceFromObjectCM, MOVEMENT_DIRECTION.REVERSE);
+        encoderDrive(.1, 1, MOVEMENT_DIRECTION.REVERSE);
 
 
 
@@ -713,7 +716,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 //            }
             }
 
-    }
+
 
     public float colorSensor() {
         int colorValue = 0;
@@ -782,11 +785,11 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
             // Update the hsvValues array by passing it to Color.colorToHSV()
 //            Color.colorToHSV(colors.toColor(), hsvValues);
-//            telemetry.addLine()
-//                    .addData("Red", "%.3f", colors.red)
-//                    .addData("Green", "%.3f", colors.green)
-//                    .addData("Blue", "%.3f", colors.blue);
-//            telemetry.addLine()
+            telemetry.addLine()
+                    .addData("Red", "%.3f", colors.red)
+                    .addData("Green", "%.3f", colors.green)
+                    .addData("Blue", "%.3f", colors.blue);
+            telemetry.addLine();
 //                    .addData("Hue", "%.3f", hsvValues[0])
 //                    .addData("Saturation", "%.3f", hsvValues[1])
 //                    .addData("Value", "%.3f", hsvValues[2]);
@@ -831,7 +834,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
         yellowPlacer.setPosition(355);
-        sleep(700);
+        sleep(400);
         yellowPlacer.setPosition(0);
         sleep(400);
 

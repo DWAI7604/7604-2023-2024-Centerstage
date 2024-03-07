@@ -96,87 +96,107 @@ public class AutoBlueFar extends RobotLinearOpMode{
        sleep(2000);
 
           if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.CENTER) {
-              encoderDrive(.4, 39.6, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
-
-
-
-
-
-              /*while (colorSensor() != 1 && opModeIsActive()) {
-                  colorSensor();
-                  sensorDrive(.1, MOVEMENT_DIRECTION.FORWARD);
-              }
-              if (colorSensor() == 1) {
-                  motorKill();
-              }*/
+              encoderDrive(.7, 34, MOVEMENT_DIRECTION.FORWARD);
               purplePixelPlace();
-              sleep(400);
-              sleep(9000);
-              encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              encoderDrive(.2, 9, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.5, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              sleep(450);
 
-              encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
-              encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
-              encoderDrive(.7, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.5, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderTurn(.5, 130, TURN_DIRECTION.TURN_RIGHT);
+
+
+
+              encoderDrive(.4, 25, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.7, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
+//
+//            encoderDrive(.4, 9, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            sleep(12000);
+//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.7, 17, MOVEMENT_DIRECTION.REVERSE);
+
+              encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.7, 63, MOVEMENT_DIRECTION.REVERSE);
+              sleep(1000); //Make longer as needed
+              encoderDrive(1, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
               yellowPixelPlace();
-              sleep(400);
-              encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.7, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.7, 12, MOVEMENT_DIRECTION.REVERSE);
+              sleep(300);
+
+              encoderDrive(1, 3, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(1, 13, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
+
+
+
 
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.LEFT) {
 
-              encoderDrive(.4, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              encoderDrive(.4, 25, MOVEMENT_DIRECTION.FORWARD);
-              encoderTurn(.4, 140, TURN_DIRECTION.TURN_RIGHT);
-              encoderDrive(.4, 15, MOVEMENT_DIRECTION.REVERSE);
-              encoderDrive(.4, 3, MOVEMENT_DIRECTION.STRAFE_LEFT);
-
+              encoderDrive(.7, 25, MOVEMENT_DIRECTION.FORWARD);
+              encoderTurn(.5, 135, TURN_DIRECTION.TURN_RIGHT);
+              encoderDrive(.7, 8, MOVEMENT_DIRECTION.REVERSE);
 
               purplePixelPlace();
-              sleep(400);
-              encoderDrive(.4, 3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              encoderDrive(.4, 15, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.7, 40, MOVEMENT_DIRECTION.REVERSE);
-              sleep(7000);
+              sleep(450);
 
-              encoderDrive(.7, 30, MOVEMENT_DIRECTION.REVERSE);
-              encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-              distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+              encoderDrive(.7, 15, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.4, 40, MOVEMENT_DIRECTION.REVERSE);
+
+              encoderDrive(.7, 40, MOVEMENT_DIRECTION.REVERSE);
+              sleep(1800);
+              encoderDrive(1, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+
+              distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
               yellowPixelPlace();
-              sleep(400);
-              encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.7, 16, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.7, 12, MOVEMENT_DIRECTION.REVERSE);
+              sleep(300);
+              encoderDrive(1, 5, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(1, 9, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
+
+              motorKill();
 
               motorKill();
           } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFar.SkystonePosition.RIGHT) {
 
-              encoderDrive(.5, 30, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.7, 30, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(.5, 8, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
 
               purplePixelPlace();
-              sleep(400);
-              encoderDrive(.3, 5.5, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.4, 15, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.6, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              sleep(10000);
-              encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.7, 18, MOVEMENT_DIRECTION.REVERSE);
-              encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
-              distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+              sleep(450);
+
+              encoderTurn(.5, 140, TURN_DIRECTION.TURN_RIGHT);
+              encoderDrive(.5, 20, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(.5, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              encoderDrive(.5, 48, MOVEMENT_DIRECTION.REVERSE);
+
+              encoderDrive(.7, 38, MOVEMENT_DIRECTION.REVERSE);
+              sleep(2000); //Make longer as needed
+              encoderDrive(1, 16, MOVEMENT_DIRECTION.STRAFE_LEFT);
+              distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
               yellowPixelPlace();
-              sleep(400);
-              encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
-              encoderDrive(.7, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
-              encoderDrive(.7, 12, MOVEMENT_DIRECTION.REVERSE);
+              sleep(300);
+//            encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.4, 18, MOVEMENT_DIRECTION.FORWARD);
+//            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.4, 18, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            sleep(9000);
+//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
+//
+
+//            distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+//            encoderDrive(.5, 1.3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+//            yellowPixelPlace();
+//            sleep(400);
+
+              encoderDrive(1, 5, MOVEMENT_DIRECTION.FORWARD);
+              encoderDrive(1, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+              encoderDrive(1, 15, MOVEMENT_DIRECTION.REVERSE);
+
 
               motorKill();
 

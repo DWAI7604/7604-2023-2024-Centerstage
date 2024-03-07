@@ -52,7 +52,8 @@ public class AutoMotorTesting extends RobotLinearOpMode{
         declareHardwareProperties();
 
 
-        distSensorDrive(.5, 5, MOVEMENT_DIRECTION.REVERSE);
+        encoderDrive(.3, 8, MOVEMENT_DIRECTION.FORWARD);
+        colorSensor();
         telemetry.update();
 
     }

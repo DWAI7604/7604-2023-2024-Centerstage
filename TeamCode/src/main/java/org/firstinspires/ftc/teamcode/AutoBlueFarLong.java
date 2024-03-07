@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -31,7 +32,7 @@ import android.graphics.Color;
 import android.view.View;
 
 @Autonomous
-public class AutoRedFar extends RobotLinearOpMode{
+public class AutoBlueFarLong extends RobotLinearOpMode{
 
     //Declaration of drive motors
     DcMotor rightFrontDriveMotor;
@@ -44,11 +45,12 @@ public class AutoRedFar extends RobotLinearOpMode{
         //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
         declareHardwareProperties();
         OpenCvInternalCamera phoneCam;
-        SkystoneDeterminationPipelineRedFar pipeline;
+        SkystoneDeterminationPipelineBlueFarLong pipeline;
+
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
-        pipeline = new SkystoneDeterminationPipelineRedFar();
+        pipeline = new SkystoneDeterminationPipelineBlueFarLong();
         phoneCam.setPipeline(pipeline);
 
         // We set the viewport policy to optimized view so the preview doesn't appear 90 deg
@@ -73,9 +75,10 @@ public class AutoRedFar extends RobotLinearOpMode{
             }
         });
 
-
-
-
+        /*
+         * The INIT-loop:
+         * This REPLACES waitForStart!
+         */
         while (!isStarted() && !isStopRequested())
         {
             telemetry.addData("Realtime analysis", pipeline.getAnalysis());
@@ -90,107 +93,90 @@ public class AutoRedFar extends RobotLinearOpMode{
          * for later use. We must do this because the analysis will continue
          * to change as the camera view changes once the robot starts moving!
          */
-        sleep(400);
-        if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.CENTER) {
-            encoderDrive(.7, 34, MOVEMENT_DIRECTION.FORWARD);
+        sleep(2000);
+
+        if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFarLong.SkystonePosition.CENTER) {
+            encoderDrive(.4, 39.6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_LEFT);
+
+
+
+
+
+              /*while (colorSensor() != 1 && opModeIsActive()) {
+                  colorSensor();
+                  sensorDrive(.1, MOVEMENT_DIRECTION.FORWARD);
+              }
+              if (colorSensor() == 1) {
+                  motorKill();
+              }*/
             purplePixelPlace();
-            sleep(450);
-
-            encoderDrive(.5, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderTurn(.5, 130, TURN_DIRECTION.TURN_LEFT);
-
-
-
-            encoderDrive(.4, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.7, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//
-//            encoderDrive(.4, 9, MOVEMENT_DIRECTION.FORWARD);
-//            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            encoderDrive(.4, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            sleep(12000);
-//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            encoderDrive(.7, 17, MOVEMENT_DIRECTION.REVERSE);
-
-            encoderDrive(.4, 30, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.7, 63, MOVEMENT_DIRECTION.REVERSE);
-            sleep(1000); //Make longer as needed
-            encoderDrive(1, 12, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
-            yellowPixelPlace();
-            sleep(300);
-
-            encoderDrive(1, 3, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(1, 13, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
-
-
-
-
-            motorKill();
-        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.LEFT) {
-
-            encoderDrive(.7, 30, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.5, 8, MOVEMENT_DIRECTION.STRAFE_LEFT);
-
-
-            purplePixelPlace();
-            sleep(450);
-
-            encoderTurn(.5, 140, TURN_DIRECTION.TURN_LEFT);
-            encoderDrive(.5, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.5, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.5, 48, MOVEMENT_DIRECTION.REVERSE);
-
-            encoderDrive(.7, 38, MOVEMENT_DIRECTION.REVERSE);
-            sleep(2000); //Make longer as needed
-            encoderDrive(1, 16, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
-            yellowPixelPlace();
-            sleep(300);
-//            encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            encoderDrive(.4, 18, MOVEMENT_DIRECTION.FORWARD);
-//            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            encoderDrive(.4, 18, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            sleep(9000);
-//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
-//
-
-//            distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
-//            encoderDrive(.5, 1.3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-//            yellowPixelPlace();
-//            sleep(400);
-
-            encoderDrive(1, 5, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(1, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(1, 15, MOVEMENT_DIRECTION.REVERSE);
-
-
-            motorKill();
-        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.RIGHT) {
-
-            encoderDrive(.7, 25, MOVEMENT_DIRECTION.FORWARD);
-            encoderTurn(.5, 135, TURN_DIRECTION.TURN_LEFT);
-            encoderDrive(.7, 8, MOVEMENT_DIRECTION.REVERSE);
-
-            purplePixelPlace();
-            sleep(450);
-
-            encoderDrive(.7, 15, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(.4, 20, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            sleep(400);
+            sleep(9000);
             encoderDrive(.4, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-            encoderDrive(.4, 40, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.2, 9, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.5, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
 
-            encoderDrive(.7, 40, MOVEMENT_DIRECTION.REVERSE);
-            sleep(1800);
-            encoderDrive(1, 10, MOVEMENT_DIRECTION.STRAFE_RIGHT);
-
-            distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
+            encoderDrive(.7, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();
-            sleep(300);
-            encoderDrive(1, 5, MOVEMENT_DIRECTION.FORWARD);
-            encoderDrive(1, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
-            encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
+            sleep(400);
+            encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 12, MOVEMENT_DIRECTION.REVERSE);
+
+            motorKill();
+        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFarLong.SkystonePosition.LEFT) {
+
+            encoderDrive(.4, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 25, MOVEMENT_DIRECTION.FORWARD);
+            encoderTurn(.4, 140, TURN_DIRECTION.TURN_RIGHT);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.4, 3, MOVEMENT_DIRECTION.STRAFE_LEFT);
+
+
+            purplePixelPlace();
+            sleep(400);
+            encoderDrive(.4, 3, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 40, MOVEMENT_DIRECTION.REVERSE);
+            sleep(7000);
+
+            encoderDrive(.7, 30, MOVEMENT_DIRECTION.REVERSE);
+            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+            yellowPixelPlace();
+            sleep(400);
+            encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 16, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 12, MOVEMENT_DIRECTION.REVERSE);
+
+            motorKill();
+        } else if (pipeline.getAnalysis() == SkystoneDeterminationPipelineBlueFarLong.SkystonePosition.RIGHT) {
+
+            encoderDrive(.5, 30, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.3, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+
+
+            purplePixelPlace();
+            sleep(400);
+            encoderDrive(.3, 5.5, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.4, 15, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.6, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            sleep(10000);
+            encoderDrive(.7, 15, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 18, MOVEMENT_DIRECTION.REVERSE);
+            encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
+            distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
+            yellowPixelPlace();
+            sleep(400);
+            encoderDrive(.7, 6, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 12, MOVEMENT_DIRECTION.REVERSE);
 
             motorKill();
 
@@ -198,17 +184,17 @@ public class AutoRedFar extends RobotLinearOpMode{
             encoderDrive(.6, 50, MOVEMENT_DIRECTION.FORWARD);
             encoderDrive(.6, 60, MOVEMENT_DIRECTION.STRAFE_RIGHT);
 
-            
+
             motorKill();
 
         }
-        stop();
+
 
     }
 }
 
 
-class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
+class SkystoneDeterminationPipelineBlueFarLong extends OpenCvPipeline
 {
     /*
      * An enum to define the skystone position
@@ -277,7 +263,6 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
     Mat region1_Cb, region2_Cb, region3_Cb;
     Mat YCrCb = new Mat();
     Mat Cb = new Mat();
-    Mat Cr = new Mat();
     int avg1, avg2, avg3;
 
     // Volatile since accessed by OpMode thread w/o synchronization
@@ -290,7 +275,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
     void inputToCb(Mat input)
     {
         Imgproc.cvtColor(input, YCrCb, Imgproc.COLOR_RGB2YCrCb);
-        Core.extractChannel(YCrCb, Cr, 1);
+        Core.extractChannel(YCrCb, Cb, 2);
     }
 
     @Override
@@ -312,9 +297,9 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
          * buffer. Any changes to the child affect the parent, and the
          * reverse also holds true.
          */
-        region1_Cb = Cr.submat(new Rect(region1_pointA, region1_pointB));
-        region2_Cb = Cr.submat(new Rect(region2_pointA, region2_pointB));
-        region3_Cb = Cr.submat(new Rect(region3_pointA, region3_pointB));
+        region1_Cb = Cb.submat(new Rect(region1_pointA, region1_pointB));
+        region2_Cb = Cb.submat(new Rect(region2_pointA, region2_pointB));
+        region3_Cb = Cb.submat(new Rect(region3_pointA, region3_pointB));
     }
 
     @Override
@@ -408,14 +393,14 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
         /*
          * Find the max of the 3 averages
          */
-        int minOneTwo = Math.max(avg1, avg2);
-        int min = Math.max(minOneTwo, avg3);
+        int maxOneTwo = Math.max(avg1, avg2);
+        int max = Math.max(maxOneTwo, avg3);
 
         /*
          * Now that we found the max, we actually need to go and
          * figure out which sample region that value was from
          */
-        if(min == avg1) // Was it from region 1?
+        if(max == avg1) // Was it from region 1?
         {
             position = SkystonePosition.LEFT; // Record our analysis
 
@@ -430,7 +415,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(min == avg2) // Was it from region 2?
+        else if(max == avg2) // Was it from region 2?
         {
             position = SkystonePosition.CENTER; // Record our analysis
 
@@ -445,7 +430,7 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
                     GREEN, // The color the rectangle is drawn in
                     -1); // Negative thickness means solid fill
         }
-        else if(min == avg3) // Was it from region 3?
+        else if(max == avg3) // Was it from region 3?
         {
             position = SkystonePosition.RIGHT; // Record our analysis
 
@@ -477,5 +462,3 @@ class SkystoneDeterminationPipelineRedFar extends OpenCvPipeline
         return position;
     }
 }
-
-
