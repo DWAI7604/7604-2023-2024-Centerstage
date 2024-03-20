@@ -97,11 +97,11 @@ public class AutoBlueClose extends RobotLinearOpMode{
 
             purplePixelPlace();
             sleep(400);
-            encoderDrive(.7, 14, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 19, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderDrive(.7, 11, MOVEMENT_DIRECTION.REVERSE);
             encoderTurn(.7, 130, TURN_DIRECTION.TURN_RIGHT);
             distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.3, 2, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+
 
 
             yellowPixelPlace();
@@ -119,7 +119,7 @@ public class AutoBlueClose extends RobotLinearOpMode{
 
             purplePixelPlace();
             sleep(600);
-            encoderDrive(.7, 9, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.7, 12, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderTurn(.5, 135, TURN_DIRECTION.TURN_RIGHT);
 
             distSensorDrive(.5, 3, MOVEMENT_DIRECTION.REVERSE);
@@ -138,9 +138,9 @@ public class AutoBlueClose extends RobotLinearOpMode{
 
 
             purplePixelPlace();
-            sleep(400);
+            sleep(550);
             encoderDrive(.7, 4, MOVEMENT_DIRECTION.REVERSE);
-            encoderDrive(.5, 18, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.5, 25, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
             distSensorDrive(.7,3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();

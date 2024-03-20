@@ -92,11 +92,11 @@ public class AutoRedFar extends RobotLinearOpMode{
          */
         sleep(400);
         if (pipeline.getAnalysis() == SkystoneDeterminationPipelineRedFar.SkystonePosition.CENTER) {
-            encoderDrive(.7, 34, MOVEMENT_DIRECTION.FORWARD);
+            encoderDrive(.7, 37, MOVEMENT_DIRECTION.FORWARD);
             purplePixelPlace();
             sleep(450);
 
-            encoderDrive(.5, 10, MOVEMENT_DIRECTION.STRAFE_LEFT);
+            encoderDrive(.5, 6, MOVEMENT_DIRECTION.STRAFE_LEFT);
             encoderTurn(.5, 130, TURN_DIRECTION.TURN_LEFT);
 
 
@@ -115,6 +115,7 @@ public class AutoRedFar extends RobotLinearOpMode{
             encoderDrive(.7, 63, MOVEMENT_DIRECTION.REVERSE);
             sleep(1000); //Make longer as needed
             encoderDrive(1, 12, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
             distSensorDrive(1, 3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();
             sleep(300);

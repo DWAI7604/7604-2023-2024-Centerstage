@@ -665,6 +665,9 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
         double power;
         double dist = distanceSensor(SENSOR_DIRECTION.REAR);
+        if (dist > 10) {
+            dist = 10;
+        }
 
 //        if (movement_direction == MOVEMENT_DIRECTION.REVERSE) {
 //
@@ -834,7 +837,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
         yellowPlacer.setPosition(355);
-        sleep(400);
+        sleep(600);
         yellowPlacer.setPosition(0);
         sleep(400);
 
@@ -1494,6 +1497,11 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
         leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
         rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
         leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+
+        leftBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
     }

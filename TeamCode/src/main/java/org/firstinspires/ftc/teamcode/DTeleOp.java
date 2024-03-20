@@ -36,6 +36,13 @@ public class DTeleOp extends RobotLinearOpMode {
         //Uses RobotLinearOpMode method to declare all hardware properties
         declareHardwareProperties();
 
+        leftBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -50,10 +57,19 @@ public class DTeleOp extends RobotLinearOpMode {
             planeLauncher();
             hangerControl();
 
+            if (isStopRequested()) {
+                leftBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            }
+
 
 
 
         }
+
+
 
     }
 
@@ -140,6 +156,8 @@ public class DTeleOp extends RobotLinearOpMode {
 
 
 
+
+
     }
 
     public void juliansBullshit() {
@@ -184,6 +202,7 @@ public class DTeleOp extends RobotLinearOpMode {
     public void intakeControl(){
 
         intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         while (gamepad1.right_bumper) {

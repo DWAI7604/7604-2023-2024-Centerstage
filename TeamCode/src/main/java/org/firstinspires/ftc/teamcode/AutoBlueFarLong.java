@@ -121,6 +121,7 @@ public class AutoBlueFarLong extends RobotLinearOpMode{
             encoderDrive(.7, 15, MOVEMENT_DIRECTION.REVERSE);
             encoderTurn(.7, 135, TURN_DIRECTION.TURN_RIGHT);
             encoderDrive(.7, 5, MOVEMENT_DIRECTION.STRAFE_RIGHT);
+            encoderDrive(.7, 10, MOVEMENT_DIRECTION.REVERSE);
             distSensorDrive(.7, 3, MOVEMENT_DIRECTION.REVERSE);
             yellowPixelPlace();
             sleep(400);
