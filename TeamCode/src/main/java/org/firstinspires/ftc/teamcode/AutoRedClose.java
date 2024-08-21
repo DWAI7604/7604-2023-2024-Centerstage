@@ -41,6 +41,7 @@ public class AutoRedClose extends RobotLinearOpMode{
 
 
 
+
     public void runOpMode() {
 
         //intakeMotor = hardwareMap.get(DcMotor.class, "intakeMotor");

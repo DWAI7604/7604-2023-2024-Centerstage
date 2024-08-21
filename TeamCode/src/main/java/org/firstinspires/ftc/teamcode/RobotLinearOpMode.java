@@ -111,6 +111,8 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
 
 
+
+
     public void encoderDrive(double power, double inches, MOVEMENT_DIRECTION movement_direction) {
 
 
@@ -816,7 +818,7 @@ public abstract class RobotLinearOpMode extends LinearOpMode {
 
     public void purplePixelPlace() {
 
-        Servo purplePlacer = null;
+        Servo purplePlacer;
 
         purplePlacer = hardwareMap.get(Servo.class, "purplePlacer");
 
