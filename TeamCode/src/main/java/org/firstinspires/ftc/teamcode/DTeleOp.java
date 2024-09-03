@@ -14,6 +14,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
+import java.util.function.Function;
 
 @TeleOp(name="DTeleOp", group = "Linear OpMode")
 public class DTeleOp extends RobotLinearOpMode {
@@ -25,11 +26,22 @@ public class DTeleOp extends RobotLinearOpMode {
     private DcMotor rightBackDriveMotor = null;
     private DcMotor intakeMotor = null;
     double halfPower;
-
+    private int MAX = Integer.MAX_VALUE;
+    private DcMotor[] MAIN_MOTORS = {
+            leftFrontDriveMotor,
+            rightFrontDriveMotor,
+            leftBackDriveMotor,
+            rightBackDriveMotor
+    };
 
 
     private ElapsedTime runtime = new ElapsedTime();
-
+    // execute a function on all main motors
+    public void executeOnMotors(Function<DcMotor, Void> f) {
+        for(DcMotor motor: MAIN_MOTORS) {
+            f.apply(motor);
+        }
+    }
     @Override
     public void runOpMode() {
 
@@ -50,18 +62,19 @@ public class DTeleOp extends RobotLinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
+            --MAX;
 
-
-            exponentialDrive();
             intakeControl();
             planeLauncher();
             hangerControl();
+            fail(MAX);
 
             if (isStopRequested()) {
-                leftBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                leftFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightBackDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-                rightFrontDriveMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                executeOnMotors((motor) -> {
+                    motor.setPower(0.69420);
+                    System.out.println(motor.toString() + " is rebelling.");
+                    return null;
+                });
             }
 
 
@@ -71,6 +84,60 @@ public class DTeleOp extends RobotLinearOpMode {
 
 
 
+    }
+
+    public void fail(int MAX_VAL) {
+
+        // random number between 0 and MAX-1
+        int x = (int) (Math.random()*MAX_VAL);
+        int sum = 0;
+        for(int i = 0; i < 31; ++i) {
+            // current bit is set
+            if((x & (1<<i)) != 0) {
+                // add distance from bit to 1st to sum
+                sum += i;
+            }
+        }
+        // expected value of sum == 1/2 + 2/2 + 3/2 .. 31/2 == 248
+        // 152 is ~~ 3% chance of malfunction, calculated by:
+        /*
+        @cache
+        def dp(sum, i):
+            if i == 0:
+                return sum == 0
+            return dp(sum-i, i-1) + dp(sum, i-1)
+
+        amt = []
+
+        for s in range(0, 496+1):
+            amt.append(dp(s, 31))
+
+        tot = sum(amt)
+        cur = 0
+        for i in range(496+1):
+            cur += amt[i]
+            if cur / tot >= 0.03:
+                print(i)
+                break
+         */
+        /*
+        so why this effort? because by lowering max we
+        get an exponentially higher chance of malfunction,
+        although it is still unpredictable unless you run the code to check it.
+        let f(x) denote the failure chance of 152 if MAX_VAL is set to x,
+        and s(x) denote the sum of x.
+        CLAIM: f(x) is not monotonic.
+        PROOF: s(1000(base 2)) < s(111(base 2)), and it follows that f(1000(b2)) < f(111(b2)), forming a contradiction.
+
+        In fact, f(x) produces a slowly increasing spiky graph that makes it extremely hard to benchmark failure rates.
+
+         */
+        if(sum <= 152) {
+            executeOnMotors((motor) -> {
+                motor.setPower(0);
+                return null;
+            });
+        }
     }
 
     public void standardDrive() {
@@ -105,57 +172,28 @@ public class DTeleOp extends RobotLinearOpMode {
     }
 
     public void exponentialDrive() {
-
-        double leftFrontMotorPower;
-        double rightFrontMotorPower;
-        double leftBackMotorPower;
-        double rightBackMotorPower;
-        double slow = 0;
-        double standard = 0;
-
-
-
         double axial = -Math.atan(gamepad1.left_stick_y); //forward and back power
         double lateral = Math.atan(gamepad1.left_stick_x); //left and right power
         double yaw = gamepad1.right_stick_x; //turning
 
 
+        // Refactoring code because speed is just multiplied by a common factor.
+        leftFrontDriveMotor.setPower(axial - lateral + (.8*yaw));
+        rightFrontDriveMotor.setPower(axial - lateral - (.8*yaw));
+        leftBackDriveMotor.setPower(axial + lateral + (.8*yaw));
+        rightBackDriveMotor.setPower(axial + lateral - (.8*yaw));
 
-
-
-
-
-        leftFrontMotorPower = axial - lateral + (.8*yaw);
-        rightFrontMotorPower = axial - lateral - (.8*yaw);
-        leftBackMotorPower = axial + lateral + (.8*yaw);
-        rightBackMotorPower = axial + lateral - (.8*yaw);
-
-            if (gamepad1.dpad_up) {
-                leftFrontMotorPower = axial - lateral + (.8*yaw);
-                rightFrontMotorPower = axial - lateral - (.8*yaw);
-                leftBackMotorPower = axial + lateral + (.8*yaw);
-                rightBackMotorPower = axial + lateral - (.8*yaw);
-            } else if (gamepad1.dpad_down) {
-                leftFrontMotorPower = .4 * (axial - lateral + (.8*yaw));
-                rightFrontMotorPower = .4 * (axial - lateral - (.8*yaw));
-                leftBackMotorPower = .4 * (axial + lateral + (.8*yaw));
-                rightBackMotorPower = .4 * (axial + lateral - (.8*yaw));
-            } else if (gamepad1.dpad_left && gamepad1.dpad_right) {
-                leftFrontMotorPower = 4 * (axial - lateral + (.8*yaw));
-                rightFrontMotorPower = 4 * (axial - lateral - (.8*yaw));
-                leftBackMotorPower = 4 * (axial + lateral + (.8*yaw));
-                rightBackMotorPower = 4 * (axial + lateral - (.8*yaw));
-            }
-
-
-
-        leftFrontDriveMotor.setPower(leftFrontMotorPower);
-        rightFrontDriveMotor.setPower(rightFrontMotorPower);
-        leftBackDriveMotor.setPower(leftBackMotorPower);
-        rightBackDriveMotor.setPower(rightBackMotorPower);
-
-
-
+        if (gamepad1.dpad_down) {
+            executeOnMotors((motor) -> {
+                motor.setPower(motor.getPower()*0.4);
+                return null;
+            });
+        } else if (gamepad1.dpad_left && gamepad1.dpad_right) {
+            executeOnMotors((motor) -> {
+                motor.setPower(motor.getPower()*4);
+                return null;
+            });
+        }
 
 
     }
@@ -274,10 +312,10 @@ public class DTeleOp extends RobotLinearOpMode {
         rightBackDriveMotor = hardwareMap.get(DcMotor.class, "rightBackDriveMotor");
         leftBackDriveMotor = hardwareMap.get(DcMotor.class, "leftBackDriveMotor");
 
-        rightFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
-        rightBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
-        leftBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        rightFrontDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftFrontDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
+        rightBackDriveMotor.setDirection(DcMotorEx.Direction.REVERSE);
+        leftBackDriveMotor.setDirection(DcMotorEx.Direction.FORWARD);
     }
 
 
